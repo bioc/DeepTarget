@@ -6,4 +6,4 @@ library(devtools)
 ## intall Deeptarget
 https://github.com/CBIIT-CGBB/DeepTarget
 
-Please find R script in Example/ExWorkflow.R for demonstration how the package is used.
+Please find R script in Example/ExWorkflow.R for demonstration.
