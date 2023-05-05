@@ -4,6 +4,6 @@ install.packages("devtools")
 ## call the library
 library(devtools)
 ## intall Deeptarget
-https://github.com/CBIIT-CGBB/DeepTarget
+devtools::install_github("CBIIT-CGBB/DeepTarget")
 
 Please find R script in Example/ExWorkflow.R for demonstration.
