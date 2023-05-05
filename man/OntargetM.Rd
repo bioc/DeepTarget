@@ -13,10 +13,10 @@ an object containing Viability matrix after CRISPR-KO; Viability after Drug Trea
   A list of 5 matrices
   \describe{
     \item{\code{DrugMetadata}}{containing 1448 unique drugs with 5 columns:  broad_id_trimmed, name, target, drug_category, and moa}
-    \item{\code{secondary_prism}}{containing Viability scores after Drug Treatment with 1618 drugs across 319 unique celllines}
-    \item{\code{avana_CRISPR}}{containing Gene effect scores after CRISPR-KO with 18333 genes across 319 unique celllines}
-    \item{\code{mutations_mat}}{Mutation binary matrix for ~20k genes across 319 unique cell lines; 0 is WT; 1 is mutated}
-    \item{\code{expression_20Q4}}{ Expression profile of 319 unique celllines for 20K genes}
+    \item{\code{secondary_prism}}{containing Viability scores after Drug Treatment with 1618 drugs across 392 unique celllines}
+    \item{\code{avana_CRISPR}}{containing Gene effect scores after CRISPR-KO with 17453 genes across 392 unique celllines. This is version 22Q4}
+    \item{\code{mutations_mat}}{Mutation binary matrix for ~20k genes across 392 unique cell lines; 0 is WT; 1 is mutated}
+    \item{\code{expression_20Q4}}{ Expression profile of 392 unique celllines for 20K genes}
   }
 }
 \details{
