@@ -6,8 +6,6 @@ setwd(dirname(current_path ))
 library ( DeepTarget)
 data ("OntargetM")
 ### drug in the paper.
-## cna't locate the drug named GSK2830371 as the figure 5G.
-
 drug.name <- c('atiprimod','AMG-232','pitavastatin','Ro-4987655','alexidine','RGFP966','dabrafenib','olaparib','CGM097','ibrutinib','palbociclib')
 length(drug.name)
 ## get the id,
