@@ -115,9 +115,6 @@ head(sim.LowExp.Strength)
 sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
 head(sim.LowExp.Pval)
 dim(sim.LowExp.Strength)
-## we should create a rdata save it in the data folder if we can't create a good dummy file as the output.
-## depending on whehter we can add more data in the pacakge.
-## the best is to save both similary for all and for low.
 pdf ("Result/sim.low.exp.plot.pdf")
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(2,2));
 plotSim (dx=sim.LowExp.Pval,dy=sim.LowExp.Strength,clr=colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
