@@ -1,9 +1,10 @@
-# DeepTarget
-## install the devtools prior install the package.
-install.packages("devtools")
-## call the library
-library(devtools)
+# BiocManager
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.17")
+
 ## intall Deeptarget
-devtools::install_github("CBIIT-CGBB/DeepTarget")
+BiocManager::install("DeepTarget")
+
 
 Please find R script in Example/ExWorkflow.R for demonstration.
