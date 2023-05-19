@@ -1,7 +1,7 @@
 Package: DeepTarget
 Type: Package
 Title: Deep characterization of cancer drugs 
-Version: 0.1.1
+Version: 0.99.0
 Author: sanjusinha7, tinh.nguyen, yhu
 Maintainer: <tinh.nguyen@nih.gov>
 Description: Deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens.
