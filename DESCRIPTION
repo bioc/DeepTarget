@@ -8,7 +8,7 @@ Description: Deep characterization of cancer drugs mechanism of action by integr
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-biocViews: ExperimentHub, ExperimentData,CancerData, Homo_sapiens_Data, RNASeqData, ExpressionData, GeneSetEnrichment, CRISPR, Technology
+biocViews: ExperimentHub, ExperimentData,CancerData, Homo_sapiens_Data, RNASeqData, ExpressionData, GeneSetEnrichment
 RoxygenNote: 7.2.3
 LazyDataCompression:xz
 Depends: R (>= 3.5.0),rlang,tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, base, parallel, pROC, ggrepel, grid, gridExtra, stringb, DEGreport, readxl,stringr
