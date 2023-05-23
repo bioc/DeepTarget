@@ -1,29 +1,13 @@
 ## this is the example script if the data contains multiple assays for a drug.
 rm(list=ls());
-library(rstudioapi)
-current_path <- getActiveDocumentContext()$path
-setwd(dirname(current_path ))
 library ( DeepTarget)
 data ("OntargetM")
-### drug in the paper.
-drug.name <- c('atiprimod','AMG-232','pitavastatin','Ro-4987655','alexidine','RGFP966','dabrafenib','olaparib','CGM097','ibrutinib','palbociclib')
-length(drug.name)
+drug.name <- c('ibrutinib','palbociclib')
+dir.create ( 'Result')
 ## get the id,
 S.Drug <- OntargetM$DrugMetadata$broad_id_trimmed [which (OntargetM$DrugMetadata$name %in% drug.name)]
-## each of this drug has two assay.
-########
-### this
-length(S.Drug)
-## 11
 sec.prism.f <- OntargetM$secondary_prism[which ( row.names(OntargetM$secondary_prism) %in% S.Drug), ]
-dim(sec.prism.f)
-## 16
-## some drugs has multiple assays.
-
-head(sec.prism.f)
 KO.GES <- OntargetM$avana_CRISPR
-dim(KO.GES)
-dim(sec.prism.f)
 ## calculate the similarity between these assays with KO method.
 List.sim <- NULL;
 for ( i in 1:nrow(sec.prism.f)){
@@ -34,12 +18,7 @@ for ( i in 1:nrow(sec.prism.f)){
     List.sim [[length(List.sim) + 1]] <- out
 }
 names(List.sim) <- row.names(sec.prism.f)
-dir.create( "./Result/")
-saveRDS(List.sim,
-        file = 'Result/similarity_KO_DrugTreatment.RDS')
 
-###
-length(List.sim)
 ####
 metadata <- OntargetM$DrugMetadata
 ## get the similarity for known targeted gene from the drug ( if there are multiple targeted genes, get the most similarity)
@@ -77,7 +56,6 @@ Whether_interaction_Ex_based= ifelse ( out.LowexpTarget$MaxTgt_Inter_Exp_strengt
 predicted_resistance_mutation = ifelse ( out.MutantTarget$MaxTgt_Inter_Mut_Pval<0.1,TRUE,FALSE)
 ### if desired, save how many cellline has low expresion.
 Pred.d <- cbind ( DrugTargetSim,DrugGeneMaxSim,out.MutantTarget,predicted_resistance_mutation, out.LowexpTarget,Whether_interaction_Ex_based)
-
 Low.Exp = sapply(Pred.d[,3],function(x)errHandle(sum(d.expr[x,] < 2)) )
 ## save for later.
 Pred.d$lowExpCount<-Low.Exp
@@ -91,7 +69,6 @@ Pred.d.f <- Pred.d[idx ,]
 Low.Exp.G = sapply(Pred.d.f[,3], function(x) errHandle(names(which(d.expr[x,]<2))))
 identical ( names(Low.Exp.G),Pred.d.f[,3] )
 ## only perform the gene has at least some celllines having low exp
-
 sim.LowExp <- NULL;
 sec.prism.f.f <- sec.prism.f[idx,]
 identical (row.names(sec.prism.f.f) ,Pred.d.f [,1])
@@ -119,9 +96,7 @@ pdf ("Result/sim.low.exp.plot.pdf")
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(2,2));
 plotSim (dx=sim.LowExp.Pval,dy=sim.LowExp.Strength,clr=colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
 dev.off();
-
 ## rcord these top 5 genes to the pred object.
-
 L.topG <- NULL;
 for ( i in 1:ncol(sim.LowExp.Strength)){
     top.5 <- names (sort(sim.LowExp.Strength[,i], decreasing=TRUE)[1:5])
@@ -131,7 +106,6 @@ for ( i in 1:ncol(sim.LowExp.Strength)){
 }
 Pred.d$top5GeneWlowEx <- "NA"
 Pred.d$top5GeneWlowEx [idx] <- L.topG
-
 H.topG <- NULL;
 simExp.Strength <- sapply(List.sim, function(x) x[,2])
 dim(simExp.Strength)
