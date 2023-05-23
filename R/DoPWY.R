@@ -9,7 +9,6 @@ DoPWY <- function(Sim.GES.DRS=Sim.GES.DRS, D.M = Drug.Metadata){
 
   PwyTargeted.c=sapply( PwyTargeted.c, na.omit)
   corrMat=sapply(Sim.GES.DRS, function(x) x[,2])
-  #drugVScrispr_corr_Strength=sapply(infunc_drugVScrispr_corr_features_list, function(x) x[,2])
   DoPWYEnr=mclapply(1:ncol(corrMat), function(x) {
     corrMat.u=unlist(corrMat[,x])
     names(corrMat.u)  = rownames(corrMat)

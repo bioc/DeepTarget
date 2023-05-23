@@ -2,12 +2,10 @@
 \alias{PredMaxSim}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
- Predict the gene having the most similarity across all genes
+Predict the most similar gene to the drug response
 }
 \description{
-
-Predict the gene having the most similarity associated with drug’s response scores across all genes.
-
+Predicts the gene that has the most similarity associated with drug’s response scores from the set of all genes.
 }
 \usage{
 PredMaxSim (Sim.GES.DRS = Sim.GES.DRS, D.M = Drug.Metadata)
@@ -15,7 +13,7 @@ PredMaxSim (Sim.GES.DRS = Sim.GES.DRS, D.M = Drug.Metadata)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Sim.GES.DRS}{
- similarity between Drug’s response scores and Gene effect scores from Knock-out method such as CRISPR.
+similarity between Drug’s response scores and Gene effect scores from Knock-out method such as CRISPR.
 }
   \item{D.M}{
       Drug Metadata

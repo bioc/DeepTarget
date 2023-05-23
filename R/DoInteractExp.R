@@ -16,7 +16,6 @@ DoInteractExp <- function(Predtargets=Drug.sim,Exp=Exp,DRS=DRS, GES=GES,CutOff  
     ## groups based on the cut-off. Lower and higher based on the targed gene
     Exp.Group =errHandle(Exp[Predtargets[x,3],CL.M]< CutOff )
     ## True is low, False is high.
-
     errHandle(summary(lm(DRS.f ~
                              GES.f * Exp.Group))$coefficients[4,c(1,4)])
 

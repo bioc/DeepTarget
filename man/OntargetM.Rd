@@ -2,8 +2,7 @@
 \alias{OntargetM}
 \docType{data}
 \title{
- an object containing data to be used in DeepTarget pipeline.
-
+ an object containing a small part of data to demonstrate in DeepTarget pipeline.
 }
 \description{
 an object containing Viability matrix after CRISPR-KO; Viability after Drug Treatment; Drug metadata from Broad, mutation matrix, and expression matrix with common celllines and common drugs.
@@ -12,15 +11,15 @@ an object containing Viability matrix after CRISPR-KO; Viability after Drug Trea
 \format{
   A list of 5 matrices
   \describe{
-    \item{\code{DrugMetadata}}{containing 1448 unique drugs with 5 columns:  broad_id_trimmed, name, target, drug_category, and moa}
-    \item{\code{secondary_prism}}{containing Viability scores after Drug Treatment with 1618 drugs across 392 unique celllines}
-    \item{\code{avana_CRISPR}}{containing Gene effect scores after CRISPR-KO with 17453 genes across 392 unique celllines. This is version 22Q4}
-    \item{\code{mutations_mat}}{Mutation binary matrix for ~20k genes across 392 unique cell lines; 0 is WT; 1 is mutated}
-    \item{\code{expression_20Q4}}{ Expression profile of 392 unique celllines for 20K genes}
+    \item{\code{DrugMetadata}}{containing 11 unique drugs with 5 columns:  broad_id_trimmed, name, target, drug_category, and moa}
+    \item{\code{secondary_prism}}{containing Viability scores after Drug Treatment with 16 drugs across 392 unique celllines}
+    \item{\code{avana_CRISPR}}{containing Gene effect scores after CRISPR-KO with 488 genes across 392 unique celllines. This is version 22Q4}
+    \item{\code{mutations_mat}}{Mutation binary matrix for 470 genes across 392 unique cell lines; 0 is WT; 1 is mutated}
+    \item{\code{expression_20Q4}}{ Expression profile of 392 unique celllines for 551 genes}
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+For a full list data for these matrices , please use the link below to download or contact us @ tinh.nguyen@nih.gov.
 }
 \source{
 DrugMetadata

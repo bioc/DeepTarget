@@ -2,10 +2,10 @@
 \alias{DoInteractExp}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Compute interaction between the drug and KO expression in term of lower vs higher expression
+Compute the interaction between the drug and KO expression
 }
 \description{
-Compute interaction between the drug and KO expression in term of lower vs higher expression
+Computes interaction between the drug and KO expression in term of lower vs higher expression
 }
 \usage{
 DoInteractExp(Predtargets=Drug.sim,Exp=Exp,DRS=DRS, GES=GES,CutOff = 3)

@@ -2,11 +2,10 @@
 \alias{GetSim}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Compute a correlation between the every gene crispr KO vs each drug response
+Compute a correlation between the every gene crispr KO vs each drug response.
 }
 \description{
-
-to compute the correlations between the viability of cell lines after CRISPR knockout of each gene and the viability of the same cell lines after drug treatment
+Computes correlations between the viability of cell lines after CRISPR knockout of each gene and the viability of the same cell lines after drug treatment.
 }
 \usage{
 GetSim(drugName =DrugName, DRS= drugResponseScore,GES= GeneEffectScores)
@@ -27,7 +26,7 @@ GetSim(drugName =DrugName, DRS= drugResponseScore,GES= GeneEffectScores)
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
- a dataframe contains genes with their cor values and P val associated with response scores from a given drug ID
+A dataframe containing genes with their correlation values and P values associated with response scores from a given drug ID.
 }
 \references{
 %% ~put references to the literature/web site here ~

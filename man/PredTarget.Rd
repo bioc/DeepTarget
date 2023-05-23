@@ -2,10 +2,10 @@
 \alias{PredTarget}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Prediction the most similarity across the known targeted genes.
+Prediction  of the most similar known targeted gene.
 }
 \description{
-Predict the gene having the most similarity associated with drug’s response scores across targeted genes
+Predicts the gene that has the most similarity to a drug’s response scores across targeted genes
 }
 
 \usage{

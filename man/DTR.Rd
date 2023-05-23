@@ -2,10 +2,10 @@
 \alias{DTR}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-plotting for Drug target response for primary or secondary.
+Plot of drug target response for primary or secondary targets
 }
 \description{
-plotting for Drug target response for primary or secondary based on drug of interest and gene of interest.
+Generates a plot of drug target response for primary or secondary targets based on a drug of interest and a gene of interest.
 }
 \usage{
 DTR(DN = DOI, GN = GOI, Pred = Pred, Exp = Exp, DRS = DRS, GES = GES, CutOff= 3,plot = TRUE)
@@ -34,14 +34,14 @@ Gene Effect Scores
 whether users want to plot, default is true
 }
   \item{CutOff}{
-cutoff value for gene expression of GOI high or low
+cutoff value for gene expression of gene of interest high or low
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-vialbility after KO vs drug response in GOI low vs high
+vialbility after KO vs drug response of gene of interest low vs high
 }
 \references{
 %% ~put references to the literature/web site here ~

@@ -1,5 +1,3 @@
-## this is used to pull out the gene that has the max corelation with the treated drug.
-
 PredMaxSim <- function( Sim.GES.DRS=Sim.GES.DRS, D.M = Drug.Metadata){
     Drug.Id.i <- match(names(Sim.GES.DRS), D.M[,1])
     D.M.f <- D.M[Drug.Id.i,]
@@ -23,21 +21,16 @@ PredMaxSim <- function( Sim.GES.DRS=Sim.GES.DRS, D.M = Drug.Metadata){
         BestTargetCorr=apply(corrMat,2, function(x) max(x, na.rm = T) )
         Drug.id = names(BestTargetGene)
     }
-
-
 Pred.sim=data.frame(
     DrugID = Drug.id,
     BestTargetGene=unlist(BestTargetGene),
     BestTargetCorr=BestTargetCorr)
-
 # map to get the P val from best target gene
 Pred.sim$BestTargetCorrP = sapply(1:nrow(Pred.sim), function(x)
     errHandle(corrMatPval[Pred.sim[x,'BestTargetGene'], Pred.sim[x,1]]) )
 # Best Hit Significance - FDR corrected
 Pred.sim$BestTargetCorrFDR = sapply(1:nrow(Pred.sim), function(x)
     errHandle(corrMatFDR[Pred.sim[x,'BestTargetGene'], Pred.sim[x,1]]) )
-
 Pred.sim
-
 }
 

@@ -1,10 +1,10 @@
 \name{line2user}
 \alias{line2user}
 \title{
-This function is used with colorBar function to create color bar placed in top middle of a plot.
+A utility function to correctly place the colorBar.
 }
 \description{
-This function is used with colorBar function to create color bar placed in top middle of a plot.
+This function is used in conjunction with the colorBar function to create color bar placed in top middle of a plot.
 }
 \usage{
 line2user(line, side)
