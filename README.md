@@ -1,4 +1,7 @@
 ## Installation
+### Github installation
+library(devtools)
+install_github("CBIIT-CGBB/DeepTarget")
 
 ### Bioconductor installation
 
