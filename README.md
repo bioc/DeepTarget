@@ -1,6 +1,6 @@
 ## ## Citation
 if you use `DeepTarget`, please consider adding the following
-citation (bioRxiv preprint, [direct link
+citation from bioRxiv preprint:, [direct link
 here](https://www.biorxiv.org/content/10.1101/2022.10.17.512424v1)
 
 ## Installation
