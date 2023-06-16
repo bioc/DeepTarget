@@ -22,7 +22,8 @@ In order to install the package from Bioconductor, make sure
 ### Data
  For the purpose of demonstration, we provided a OntargetM object that contains a small subset of data. For full datasets used in the manuscript, please contact us at tinh.nguyen@nih.gov. For the detail of the links for downloading the data, please do ??DeepTarget.
 
-### Brief example for 2 interesting drugs. Please note that each drug has two assays.
-Please refer the script and user manual in the inst folder
+### Brief example for interesting drug.
+
+Please refer to the file named V_analyses.Rmd in the directory vignettes
 
 
