@@ -185,10 +185,11 @@ file = 'Result/similarity_KO_LowExp_DrugTreatment.RDS')
 # Application
 
 For this section, we will use the information obtained from Core analysis. First, we find a drug's primary target(s). Next, we predict whether the drug specifically targets the wild-type or mutated target forms. We also predict the secondary target(s) that mediate its response when the primary target is not expressed
-## Finding a drug's primary target(s)
+## Finding a drug primary target
+
 The script below generates the correlation plots for primary target BRAF and MDM2 for Dabrafenib and AMG-232 respectively.
 
-```{r Finding a drug's primary target(s)}
+```{r Finding a primary target}
 Drug_P_targets <- Pred.d$MaxTargetName
 DeepTarget_P <- Pred.d$BestTargetGene
 idx <- which (Drug_P_targets==DeepTarget_P)
@@ -206,9 +207,7 @@ plotCor(DN=DOI,GN=GOI,Pred=Pred.d[5,],DRS= DRS,GES= KO.GES,plot=TRUE);
 DOI = 'AMG-232'
 GOI = 'MDM2'
 identical ( Pred.d$DrugID, row.names(sec.prism.f))
-plotCor(DN=DOI,GN=GOI,Pred=Pred.d,DRS=sec.prism.f,
-GES= KO.GES,plot=TRUE);
-
+plotCor(DN=DOI,GN=GOI,Pred=Pred.d,DRS=sec.prism.f,GES= KO.GES,plot=TRUE)
 ```
 ## Predicting whether the drug specifically targets the wild-type or mutated target forms
 The script below shows whether the drugs, CGM097 and Dabrafenib, target the wild-type or mutated
@@ -250,7 +249,7 @@ As an example, let's look at the drug 'ibrutinib' from the Prediction object. Ib
 covalent target of BTK. Please note that for this drug, there are two assays. We selected
 one of them for illustration.
 
-```{r Predicting secondary target(s) that mediate its response when the primary target is not expressed}
+```{r Predicting secondary target}
 ## This drug has two assays.
 # The index is 14 in the orders of the interesting drugs.
 identical (Pred.d$DrugID, row.names(sec.prism.f))
@@ -299,7 +298,7 @@ GOI="EGFR"
 out <- DTR(DN=DOI,GN=GOI,Pred=Pred.d[14,], Exp=d.expr,
 DRS= DRS,GES=KO.GES,CutOff= 2)
 print (out)
-dev.off()
+
 
 # The above ranks all the genes based on their secondary DKS Scores.
 

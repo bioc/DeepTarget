@@ -10,5 +10,7 @@ Encoding: UTF-8
 LazyData: true
 biocViews: GeneTarget, GenePrediction
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
 LazyDataCompression:xz
 Depends: R (>= 3.5.0),rlang,tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, base, parallel, pROC, ggrepel, grid, gridExtra, stringb, DEGreport, readxl,stringr
