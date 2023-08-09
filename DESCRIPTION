@@ -3,14 +3,17 @@ Type: Package
 Title: Deep characterization of cancer drugs 
 Version: 0.99.0
 Author: sanjusinha7, tinh.nguyen, yhu
-Maintainer: <tinh.nguyen@nih.gov>
+Authors@R: c(
+    person("Sạnju", "Sinh", email = "sanju@terpmail.umd.edu", role ="aut"),
+    person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre")),
+    person("Hu", "Ying", email = "yhu@mail.nih.gov", role ="aut"))
 Description: Deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-biocViews: GeneTarget, GenePrediction
+biocViews: GeneTarget, GenePrediction,Pathways, GeneExpression, RNASeq, ImmunoOncology,DifferentialExpression, GeneSetEnrichment, ReportWriting
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 LazyDataCompression:xz
-Depends: R (>= 3.5.0),rlang,tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, base, parallel, pROC, ggrepel, grid, gridExtra, stringb, DEGreport, readxl,stringr
+Depends: R (>= 3.5.0),rlang,tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, base, parallel, pROC, ggrepel, grid, gridExtra, stringb, DEGreport, readxl,stringr,stats

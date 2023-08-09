@@ -16,6 +16,7 @@ export('line2user')
 export('plotCor')
 
 import('DEGreport')
+import('stats')
 import('fgsea')
 import('ggplot2')
 import('ggpubr')
