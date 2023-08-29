@@ -1,8 +1,7 @@
 Package: DeepTarget
 Type: Package
 Title: Deep characterization of cancer drugs 
-Version: 0.99.3
-Author: sanjusinha7, tinh.nguyen, yhu
+Version: 0.99.4
 Authors@R: c(
     person("Sạnju", "Sinha", email = "sanju@terpmail.umd.edu", role ="aut"),
     person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre")),
