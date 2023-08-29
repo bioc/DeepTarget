@@ -37,7 +37,7 @@ library(DeepTarget)
 data("OntargetM")
 print ( "Below is the OnTargetM object containing a subset of public data downloading from depmap.org")
 sapply(OntargetM,dim)
-dir.create('./result/')
+#dir.create('./result/')
 ## drug interest.
 drug.name <- c('atiprimod','AMG-232','pitavastatin','Ro-4987655','alexidine','RGFP966','dabrafenib','olaparib','CGM097','ibrutinib','palbociclib')
 print ( " we will focus on these drugs:");
@@ -64,7 +64,7 @@ for (i in 1:nrow(sec.prism.f)){
     List.sim [[length(List.sim) + 1]] <- out
 }
 names(List.sim) <- row.names(sec.prism.f)
-saveRDS(List.sim,file = 'Result/similarity_KO_DrugTreatment.RDS')
+#saveRDS(List.sim,file = 'Result/similarity_KO_DrugTreatment.RDS')
 
 ```
 
@@ -75,9 +75,8 @@ The script performs the pathway analyis based on the drug metadata using DoPWY f
 ```{r Performing Pathway Analysis Based on Drug Meta Data}
 metadata <- OntargetM$DrugMetadata
 Pwy.Enr <- DoPWY(Sim.GES.DRS=List.sim,D.M = metadata)
-saveRDS(Pwy.Enr,
-file = 'Result/Pwy.Enrichment.RDS')
-
+#
+#saveRDS(Pwy.Enr,file = 'Result/Pwy.Enrichment.RDS')
 ```
 
 ### Predicting Similarity Across Known Targeted Genes and All Genes
@@ -146,8 +145,8 @@ Pred.d$mutant.C <- mutant.C
 Low.Exp.C = sapply(Pred.d[,3],
 function(x)errHandle(sum(d.expr[x,] < 2))) 
 Pred.d <- cbind(Pred.d, out.LowexpTarget, Whether_interaction_Ex_based,Low.Exp.C)
-FileN <- "./Result/Prediction_sim_KO_DrugTreatment_CoreAnalysis.csv"
-write.csv (Pred.d, FileN)
+#FileN <- "./Result/Prediction_sim_KO_DrugTreatment_CoreAnalysis.csv"
+#write.csv (Pred.d, FileN)
 
 ```
 ## In addition to the output of prediction object, we also identify drugs with low primary target expressing cell lines
@@ -185,8 +184,8 @@ names(sim.LowExp) <-Pred.d.f[,1]
 ```
 
 ```{r Saving the Results}
-saveRDS(sim.LowExp,
-file = 'Result/similarity_KO_LowExp_DrugTreatment.RDS')
+#saveRDS(sim.LowExp,
+#file = 'Result/similarity_KO_LowExp_DrugTreatment.RDS')
 
 ```
 
@@ -270,8 +269,7 @@ row.names(DRS) <- row.names(sec.prism.f)[14]
 ####
 DOI="ibrutinib"
 GOI="BTK"
-out <- DTR (DN=DOI,GN=GOI,Pred=Pred.d[14,], Exp=d.expr
-,DRS= DRS,GES=KO.GES,CutOff= 2)
+out <- DTR (DN=DOI,GN=GOI,Pred=Pred.d[14,], Exp=d.expr,DRS= DRS,GES=KO.GES,CutOff= 2)
 print(out)
 
 ```
@@ -283,15 +281,14 @@ secondary targets for this drug.
 
 ```{r Predicting secondary target(s) that mediate its response when the primary target is not expressed}
 
-in.f <- 'Result/similarity_KO_LowExp_DrugTreatment.RDS'
-sim.LowExp <- readRDS(file = in.f)
+#in.f <- 'Result/similarity_KO_LowExp_DrugTreatment.RDS'
+#sim.LowExp <- readRDS(file = in.f)
 sim.LowExp.Strength=sapply(sim.LowExp, function(x) x[,2])
 dim(sim.LowExp.Strength)
 sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
 head(sim.LowExp.Pval)
 ## Let's take a look at ibrutinib
-plotSim(dx=sim.LowExp.Pval[,8],dy=sim.LowExp.Strength[,8],
-clr=colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
+plotSim(dx=sim.LowExp.Pval[,8],dy=sim.LowExp.Strength[,8],clr=colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
 
 ```
 
