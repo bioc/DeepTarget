@@ -31,6 +31,7 @@ sanjusinha7, Trinh Nguyen
 
 \examples{
 library(parallel)
+library(DeepTarget)
 data (OntargetM)
 set.seed (12345)
 All.Drugs <- OntargetM$DrugMetadata[,"broad_id_trimmed"]
