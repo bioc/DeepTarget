@@ -1,5 +1,5 @@
 ## this function is called by another main function.
-utils::globalVariables(c("C_pKendall", "C_pRho"))
+#utils::globalVariables(c("C_pKendall", "C_pRho"))
 cor.test_trimmed_v0 <- function(x, ...) UseMethod("cor.test_trimmed_v0")
 #' @export
 cor.test_trimmed_v0.default <-
