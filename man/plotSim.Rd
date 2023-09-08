@@ -1,6 +1,5 @@
 \name{plotSim}
 \alias{plotSim}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Plot the similarty between corelation values and P val;
 }
@@ -8,9 +7,8 @@ Plot the similarty between corelation values and P val;
 Plot the similarty between corelation values and P val;
 }
 \usage{
-plotSim(dx = d.Pval, dy = d.corr, clr = NULL, plot = TRUE)
+plotSim(dx,dy,clr=NULL, plot=TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dx}{
 a matrix of p vals
@@ -25,47 +23,27 @@ Desired color
 %%     ~~Describe \code{plot} here~~
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
-Ying Hu
-}
-\note{
-%%  ~~further notes~~
+Ying Hu,Trinh Nguyen
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
-
+library(parallel)
 data (OntargetM)
 set.seed (12345)
 All.Drugs <- OntargetM$DrugMetadata[,"broad_id_trimmed"]
 S.Drugs <- sample(All.Drugs, 5)
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
-sim <- mclapply(S.Drugs,function(x) GetSim(x,DRS=sec.prism, GES=KO.GES),mc.cores = 2)
+sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
 names(sim) <- S.Drugs
 cor=sapply(sim, function(x) x[,2])
 Pval=sapply(sim, function(x) x[,1])
 pdf ("SimPlotKnownTargets.pdf")
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(1,1));
 color <- colorRampPalette(c("lightblue",'darkblue'));
-plotSim(dx=Pval,dy=cor,clr=color);
+plotSim(Pval,cor,clr=color);
 dev.off()
 
 }

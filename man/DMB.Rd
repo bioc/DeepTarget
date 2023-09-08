@@ -1,21 +1,17 @@
 \name{DMB}
 \alias{DMB}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-Plot of drug target response for mutant and non-mutant groups
-}
+\title{Plot of drug target response for mutant and non-mutant groups}
 \description{
 Generates a plot of Drug target response for primary or secondary targets based on a drug of interest.
 }
 \usage{
-DMB(DN = Drugname, GN= GOI, Pred = Pred, Mutant = Mutant, DRS = DRS, GES = GES, plot = TRUE)
+DMB(DrugName,GOI,Pred,Mutant,DRS,GES,plot=TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{DN}{
+  \item{DrugName}{
 Drug of interest
 }
-\item{GN}{
+\item{GOI}{
 Gene of interest
 }
   \item{Pred}{
@@ -31,43 +27,31 @@ Drug response matrix
 Gene Effect Scores
 }
   \item{plot}{
-%%     ~~Describe \code{plot} here~~
+Default is TRUE for plotting
 }
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
 vialbility after KO vs drug response in mutant.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
 \author{
- sanjusinha7
-}
-\note{
-%%  ~~further notes~~
-}
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+sanjusinha7, Trinh Nguyen
 }
 \examples{
+library(parallel)
 data (OntargetM)
 S.Drugs <- c('K70301465','K09951645')
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
 d.mt <- OntargetM$mutations_mat
-sim <- mclapply(S.Drugs,function(x) GetSim(x,DRS=sec.prism, GES=KO.GES),mc.cores = 2)
+sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
 names(sim) <- S.Drugs
 Meta.data <- OntargetM$DrugMetadata
 DrugTargetSim <- PredTarget(sim,Meta.data)
-Drug.Gene.max.sim <- PredMaxSim(Sim.GES.DRS=sim, D.M = Meta.data)
+Drug.Gene.max.sim <- PredMaxSim(sim,Meta.data)
 identical ( DrugTargetSim[,1],Drug.Gene.max.sim[,1] )
 Pred.d <-cbind (DrugTargetSim,Drug.Gene.max.sim )
 DOI = 'dabrafenib'
 GOI = 'BRAF'
-DMB (DN=DOI,GN=GOI,Pred=Pred.d,Mutant=d.mt,DRS= sec.prism,GES= KO.GES)
+DMB (DOI,GOI,Pred.d,d.mt,sec.prism,KO.GES)
 }
 

@@ -3,7 +3,7 @@ rm(list=ls());
 library ( DeepTarget)
 data ("OntargetM")
 drug.name <- c('ibrutinib','palbociclib')
-dir.create ( 'Result')
+#dir.create ( 'Result')
 ## get the id,
 S.Drug <- OntargetM$DrugMetadata$broad_id_trimmed [which (OntargetM$DrugMetadata$name %in% drug.name)]
 sec.prism.f <- OntargetM$secondary_prism[which ( row.names(OntargetM$secondary_prism) %in% S.Drug), ]
@@ -14,7 +14,7 @@ for ( i in 1:nrow(sec.prism.f)){
     DRS=as.data.frame(sec.prism.f[i,])
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[i]
-    out <- GetSim(row.names(sec.prism.f)[i],DRS=DRS, GES=KO.GES)
+    out <- GetSim(row.names(sec.prism.f)[i],DRS,KO.GES)
     List.sim [[length(List.sim) + 1]] <- out
 }
 names(List.sim) <- row.names(sec.prism.f)
@@ -37,12 +37,12 @@ for ( i in 1:nrow(sec.prism.f)){
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[i]
     ## for mutant
-    MutantInteract <- DoInteractMutant (Predtargets=DrugTargetSim[i,],Mutant=d.mt,DRS=DRS,GES=KO.GES)
+    MutantInteract <- DoInteractMutant (DrugTargetSim[i,],d.mt,DRS,KO.GES)
     ## assign the estimate as strength, and P val from the interaction model.
     TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength=sapply(MutantInteract, function(x) x[1]), MaxTgt_Inter_Mut_Pval=sapply(MutantInteract, function(x) x[2]))
     out.MutantTarget <- rbind (out.MutantTarget,TargetMutSpecificity)
     ## for expression.
-    ExpInteract <- DoInteractExp (DrugTargetSim[i,],d.expr,DRS=DRS,GES=KO.GES,CutOff = 2)
+    ExpInteract <- DoInteractExp (DrugTargetSim[i,],d.expr,DRS,KO.GES,CutOff = 2)
     ## assign the estimate as strength, and P val from the interaction model.
     TargetExpSpecificity <- data.frame(MaxTgt_Inter_Exp_strength=sapply(ExpInteract, function(x) x[1]), MaxTgt_Inter_Exp_Pval=sapply(ExpInteract, function(x) x[2]))
     out.LowexpTarget <- rbind ( out.LowexpTarget,TargetExpSpecificity)
@@ -77,12 +77,11 @@ for ( i in 1:nrow(Pred.d.f)){
     DRS.L= sec.prism.f.f[i,Low.Exp.G[[unlist(Pred.d.f[i,3])]]]
     DRS.L <- t(as.data.frame(DRS.L))
     row.names(DRS.L) <- Pred.d.f[i,1]
-    out <- GetSim(Pred.d.f[i,1],DRS=DRS.L, GES=KO.GES)
+    out <- GetSim(Pred.d.f[i,1],DRS.L,KO.GES)
     sim.LowExp [[length(sim.LowExp) + 1]] <- out
 }
 names(sim.LowExp) <-Pred.d.f[,1]
-saveRDS(sim.LowExp,
-        file = 'Result/similarity_KO_LowExp_DrugTreatment.RDS')
+#saveRDS(sim.LowExp,file = 'Result/similarity_KO_LowExp_DrugTreatment.RDS')
 
 ### plot and show the top 5 genes having the most corelation with drug when the primary is not expressed.
 ## make the function and use the sub function from dr. hu.
@@ -92,9 +91,9 @@ head(sim.LowExp.Strength)
 sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
 head(sim.LowExp.Pval)
 dim(sim.LowExp.Strength)
-pdf ("Result/sim.low.exp.plot.pdf")
+#pdf ("Result/sim.low.exp.plot.pdf")
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(2,2));
-plotSim (dx=sim.LowExp.Pval,dy=sim.LowExp.Strength,clr=colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
+plotSim (sim.LowExp.Pval,sim.LowExp.Strength,colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
 dev.off();
 ## rcord these top 5 genes to the pred object.
 L.topG <- NULL;
@@ -115,11 +114,10 @@ for ( i in 1:ncol(simExp.Strength)){
     top.5    <- paste(top.5, collapse=" ");
     H.topG <- rbind ( H.topG, top.5 )
 }
-
 Pred.d$top5Gene_Ex <- H.topG
 
 ##
-write.csv (Pred.d,"./Result/Prediction_sim_KO_DrugTreatment.csv" )
+#write.csv (Pred.d,"./Result/Prediction_sim_KO_DrugTreatment.csv" )
 ## let plot for mutation =TRUE
 
 ## plot
@@ -139,8 +137,8 @@ for ( i in 1:length(which.mut)){
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[cr.i]
     head(DRS)
-    pdf ( paste0("./Result/mutant_", row.names(Pred.d)[cr.i],".pdf"))
-    out <- DMB (DN=DOI,GN=GOI,Pred=Pred.d[cr.i,],Mutant=d.mt,DRS= DRS,GES= KO.GES,plot=TRUE)
+    #pdf ( paste0("./Result/mutant_", row.names(Pred.d)[cr.i],".pdf"))
+    out <- DMB (DOI,GOI,Pred.d[cr.i,],d.mt,DRS,KO.GES,plot=TRUE)
     print (out)
     dev.off();
 }
@@ -155,8 +153,8 @@ for ( i in 1:length(which.exp )){
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[cr.i]
     head(DRS)
-    pdf ( paste0("./Result/expr_", GOI,row.names(Pred.d)[cr.i],".pdf"))
-    out <- DTR ( DN=DOI,GN=GOI,Pred=Pred.d[cr.i,], Exp=d.expr,DRS= DRS,GES=KO.GES,CutOff= 2)
+    #pdf ( paste0("./Result/expr_", GOI,row.names(Pred.d)[cr.i],".pdf"))
+    out <- DTR (DOI,GOI,Pred.d[cr.i,],d.expr,DRS,KO.GES,CutOff= 2)
 
     print (out)
     dev.off();
@@ -173,8 +171,8 @@ for ( i in 1:length(which.exp )){
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[cr.i]
     head(DRS)
-    pdf ( paste0("./Result/expr_", GOI,row.names(Pred.d)[cr.i],".pdf"))
-    out <- DTR ( DN=DOI,GN=GOI,Pred=Pred.d[cr.i,], Exp=d.expr,DRS= DRS,GES=KO.GES,CutOff= 2)
+    #pdf ( paste0("./Result/expr_", GOI,row.names(Pred.d)[cr.i],".pdf"))
+    out <- DTR (DOI,GOI,Pred.d[cr.i,],d.expr,DRS,KO.GES,CutOff= 2)
     print (out)
     dev.off();
 }
@@ -190,8 +188,8 @@ for ( i in 1:length(idx)){
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[idx[i]]
     head(DRS)
-    pdf ( paste0("./Result/Cor_plot_Predicted_Of", GOI,'of_',row.names(Pred.d[idx[i],]),".pdf"));
-    plotCor(DN=DOI,GN=GOI,Pred=Pred.d[idx[i],],DRS= DRS,GES= KO.GES,plot=TRUE);
+    #pdf ( paste0("./Result/Cor_plot_Predicted_Of", GOI,'of_',row.names(Pred.d[idx[i],]),".pdf"));
+    plotCor(DOI,GOI,Pred.d[idx[i],],DRS,KO.GES,plot=TRUE);
     dev.off()
 }
 

@@ -60,21 +60,21 @@ for (i in 1:nrow(sec.prism.f)){
     DRS=as.data.frame(sec.prism.f[i,])
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[i]
-    out <- GetSim(row.names(sec.prism.f)[i],DRS=DRS, GES=KO.GES)
+    out <- GetSim(row.names(sec.prism.f)[i],DRS,KO.GES)
     List.sim [[length(List.sim) + 1]] <- out
 }
 names(List.sim) <- row.names(sec.prism.f)
 #saveRDS(List.sim,file = 'Result/similarity_KO_DrugTreatment.RDS')
 
 ```
-
+DrugName,DRS,GES=KO.GES
 ## Performing Pathway Analysis Based on Drug Meta Data
 
 The script performs the pathway analyis based on the drug metadata using DoPWY function.
 
 ```{r Performing Pathway Analysis Based on Drug Meta Data}
 metadata <- OntargetM$DrugMetadata
-Pwy.Enr <- DoPWY(Sim.GES.DRS=List.sim,D.M = metadata)
+Pwy.Enr <- DoPWY(List.sim,metadata)
 #
 #saveRDS(Pwy.Enr,file = 'Result/Pwy.Enrichment.RDS')
 ```
@@ -83,8 +83,8 @@ Pwy.Enr <- DoPWY(Sim.GES.DRS=List.sim,D.M = metadata)
 The script predicts similarity Across Known Targeted Genes and All Genes using PredTarget and PredMaxSim functions.
 
 ```{r section.cap="Predicting Similarity Across Known Targeted Genes and All Genes"}
-DrugTargetSim <- PredTarget(Sim.GES.DRS=List.sim, D.M=metadata)
-DrugGeneMaxSim <- PredMaxSim(Sim.GES.DRS=List.sim, D.M=metadata)
+DrugTargetSim <- PredTarget(List.sim,metadata)
+DrugGeneMaxSim <- PredMaxSim(List.sim,metadata)
 
 ```
 
@@ -101,20 +101,18 @@ for (i in 1:nrow(sec.prism.f)){
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[i]
     ## for mutant
-    Out.M <- DoInteractMutant(Predtargets=DrugTargetSim[i,],
-    Mutant=d.mt,DRS=DRS,GES=KO.GES)
+    Out.M <- DoInteractMutant(DrugTargetSim[i,],d.mt,DRS,KO.GES)
     TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength= sapply(Out.M, function(x) x[1]), 
                                        MaxTgt_Inter_Mut_Pval=sapply(Out.M, function(x) x[2]))
     out.MutantTarget <- rbind (out.MutantTarget,TargetMutSpecificity)
     ## for expression.
-    Out.Expr <- DoInteractExp(DrugTargetSim[i,],d.expr,
-    DRS=DRS,GES=KO.GES,CutOff = 2)
+    Out.Expr <- DoInteractExp(DrugTargetSim[i,],d.expr,DRS,KO.GES,CutOff= 2)
     TargetExpSpecificity <- data.frame(
     MaxTgt_Inter_Exp_strength=
     sapply(Out.Expr, function(x) x[1]),
     MaxTgt_Inter_Exp_Pval=
     sapply(Out.Expr, function(x) x[2]))
-    out.LowexpTarget <- rbind ( out.LowexpTarget,TargetExpSpecificity)
+    out.LowexpTarget <- rbind (out.LowexpTarget,TargetExpSpecificity)
 }
 
 ```
@@ -175,7 +173,7 @@ for (i in 1:nrow(Pred.d.f)){
     DRS.L= sec.prism.f.f[i,Low.Exp.G[[unlist(Pred.d.f[i,3])]]]
     DRS.L <- t(as.data.frame(DRS.L))
     row.names(DRS.L) <- Pred.d.f[i,1]
-    out <- GetSim(Pred.d.f[i,1],DRS=DRS.L, GES=KO.GES)
+    out <- GetSim(Pred.d.f[i,1],DRS.L,KO.GES)
     sim.LowExp [[length(sim.LowExp) + 1]] <- out
 }
 
@@ -210,12 +208,12 @@ identical(Pred.d$DrugID, row.names(sec.prism.f))
 DRS=as.data.frame(sec.prism.f[5,])
 DRS <- t(DRS)
 row.names(DRS) <- row.names(sec.prism.f)[5]
-plotCor(DN=DOI,GN=GOI,Pred=Pred.d[5,],DRS= DRS,GES= KO.GES,plot=TRUE);
+plotCor(DOI,GOI,Pred.d[5,],DRS,KO.GES,plot=TRUE);
 ## This drug is unique in this Prediction data object.
 DOI = 'AMG-232'
 GOI = 'MDM2'
 identical ( Pred.d$DrugID, row.names(sec.prism.f))
-plotCor(DN=DOI,GN=GOI,Pred=Pred.d,DRS=sec.prism.f,GES= KO.GES,plot=TRUE)
+plotCor(DOI,GOI,Pred.d,sec.prism.f,KO.GES,plot=TRUE)
 
 ```
 ## Predicting whether the drug specifically targets the wild-type or mutated target forms
@@ -236,10 +234,8 @@ DRS=as.data.frame(sec.prism.f[cr.i,])
 DRS <- t(DRS)
 row.names(DRS) <- row.names(sec.prism.f)[cr.i]
 head(DRS)
-out <- DMB(DN=DOI,GN=GOI,Pred=Pred.d[cr.i,],
-Mutant=d.mt,DRS= DRS,GES= KO.GES,plot=TRUE)
+out <- DMB(DOI,GOI,Pred.d[cr.i,],d.mt,DRS,KO.GES,plot=TRUE)
 print (out)
-
 ## for drug CGM097
 cr.i <- which.mut[3]
 DOI=Pred.d[cr.i,2]
@@ -248,10 +244,8 @@ DRS=as.data.frame(sec.prism.f[cr.i,])
 DRS <- t(DRS)
 row.names(DRS) <- row.names(sec.prism.f)[cr.i]
 head(DRS)
-out <- DMB(DN=DOI,GN=GOI,Pred=Pred.d[cr.i,],
-Mutant=d.mt,DRS= DRS,GES= KO.GES,plot=TRUE)
+out <- DMB(DOI,GOI,Pred.d[cr.i,],d.mt,DRS,KO.GES,plot=TRUE)
 print (out)
-
 ```
 
 ##  Predicting secondary target(s) that mediate its response when the primary target is not expressed
@@ -269,7 +263,7 @@ row.names(DRS) <- row.names(sec.prism.f)[14]
 ####
 DOI="ibrutinib"
 GOI="BTK"
-out <- DTR (DN=DOI,GN=GOI,Pred=Pred.d[14,], Exp=d.expr,DRS= DRS,GES=KO.GES,CutOff= 2)
+out <- DTR (DOI,GOI,Pred.d[14,],d.expr,DRS,KO.GES,CutOff= 2)
 print(out)
 
 ```
@@ -288,7 +282,7 @@ dim(sim.LowExp.Strength)
 sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
 head(sim.LowExp.Pval)
 ## Let's take a look at ibrutinib
-plotSim(dx=sim.LowExp.Pval[,8],dy=sim.LowExp.Strength[,8],clr=colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
+plotSim(sim.LowExp.Pval[,8],sim.LowExp.Strength[,8],colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
 
 ```
 
@@ -302,8 +296,7 @@ of evidence that Ibrutinib binds physically to EGFR. Thus, let’s focus further
 ```{r Conclusion}
 DOI="ibrutinib"
 GOI="EGFR"
-out <- DTR(DN=DOI,GN=GOI,Pred=Pred.d[14,], Exp=d.expr,
-DRS= DRS,GES=KO.GES,CutOff= 2)
+out <- DTR(DOI,GOI,Pred.d[14,],d.expr,DRS,KO.GES,CutOff= 2)
 print (out)
 
 ```

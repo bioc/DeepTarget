@@ -38,9 +38,6 @@ Expression profile of ~2K cell lines for 20K genes; file name: OmicsExpressionPr
 depmap \url{https://depmap.org/portal/download/all/}
 
 }
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
 \examples{
 data(OntargetM)
 }
