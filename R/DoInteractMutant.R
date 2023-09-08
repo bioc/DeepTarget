@@ -1,7 +1,7 @@
 
 ## perform the interaction based on cut-off
 
-DoInteractMutant <- function(Predtargets=Drug.targeted.sim,Mutant=Mutant,DRS=DRS, GES=GES )
+DoInteractMutant <- function(Predtargets,Mutant,DRS,GES)
   {
   # getting only the overlapped samples. The best way to do is to get overlapped samples for all.
     L.c <- list( KO= colnames(GES),

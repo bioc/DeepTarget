@@ -1,4 +1,4 @@
-PredMaxSim <- function( Sim.GES.DRS=Sim.GES.DRS, D.M = Drug.Metadata){
+PredMaxSim <- function(Sim.GES.DRS,D.M){
     Drug.Id.i <- match(names(Sim.GES.DRS), D.M[,1])
     D.M.f <- D.M[Drug.Id.i,]
     ## based on the name of the drug.

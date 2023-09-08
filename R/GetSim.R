@@ -1,9 +1,8 @@
 
-GetSim <- function(drugName=DrugName, DRS= drugResponseScore,GES= GeneEffectScores ){
+GetSim <- function(DrugName,DRS,GES){
   ## make sure that users already use the common cell lines in both datasets
-  common.c=intersect(colnames(DRS),
-                     colnames(GES))
-  DRS.c=DRS[drugName,common.c ]
+  common.c=intersect(colnames(DRS),colnames(GES))
+  DRS.c=DRS[DrugName,common.c ]
   GES.c=GES[,common.c]
   out.Sim.GES.DRS  =sapply(1:nrow(GES.c),function(x)
     unlist(cor.test_trimmed_v0.default(DRS.c, GES.c[x,])))

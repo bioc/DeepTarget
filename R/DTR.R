@@ -1,6 +1,6 @@
 ## Plot for Drug target response for primary or secondary.
 
-DTR <- function(DN=DOI,GN=GOI,Pred=Pred,Exp=Exp,DRS= DRS,GES= GES,CutOff= 3,plot=TRUE ){
+DTR <- function(DN,GN,Pred,Exp,DRS,GES,CutOff=3,plot=TRUE ){
     ## need to add to catch error.
     ## expression we have two cases, primary and secondary.
     if (nrow (Pred)==0) {stop("Pred should contain drug of interest")}

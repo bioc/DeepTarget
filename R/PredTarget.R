@@ -1,7 +1,7 @@
 ## this is used to pull out the targeted gene by the drug that has the max corelation.
 ## need to check this.
 
-PredTarget <- function(Sim.GES.DRS=sim, D.M = Drug.Metadata){
+PredTarget <- function(Sim.GES.DRS,D.M){
     ## Make sure the user use the same meta data for the list of Sim.GES.DRS
     Drug.Id.i <- match(names(Sim.GES.DRS), D.M[,1])
     D.M.f <- D.M[Drug.Id.i,]

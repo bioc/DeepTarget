@@ -1,5 +1,5 @@
 
-plotCor <- function(DN=Drugname,GN=GOI,Pred=Pred,DRS= DRS,GES= GES,plot=TRUE){
+plotCor <- function(DN,GN,Pred,DRS,GES,plot=TRUE){
     ## need to add to catch error.
     ## checking to see whether the drug name exist in the Pred object.
     ## get the overlapped.
@@ -9,8 +9,10 @@ plotCor <- function(DN=Drugname,GN=GOI,Pred=Pred,DRS= DRS,GES= GES,plot=TRUE){
                  Drug_Prism= colnames(DRS))
     CL.M = Reduce(intersect,L.c)
     if ( DN %in% Pred[,2]){
-        if (plot) {
-            dat.c <- data.frame(GES.c = GES [GN,CL.M], DRS.c = DRS[Pred[DN,1],CL.M])
+        if (plot){
+            GES.c = GES [GN,CL.M]
+            DRS.c = DRS[Pred[DN,1],CL.M]
+            dat.c <- data.frame(GES.c,DRS.c)
             ggplot(dat.c, aes(x = GES.c, y = DRS.c))+
                 #scale_color_manual(values = c("cyan",'red')) +
                 geom_point()+

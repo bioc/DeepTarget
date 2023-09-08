@@ -1,5 +1,5 @@
 ## this is the pathwya analysis based on the information from the drug such as moa pahtwyas and genes targeted.s
-DoPWY <- function(Sim.GES.DRS=Sim.GES.DRS, D.M = Drug.Metadata){
+DoPWY <- function(Sim.GES.DRS,D.M){
   PwyTargeted=split(D.M[,3], D.M[,5])
   PwyTargeted.unl=sapply(PwyTargeted, unlist)
   PwyTargeted.c=lapply(PwyTargeted.unl, function(y){

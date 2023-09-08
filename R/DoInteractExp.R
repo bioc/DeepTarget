@@ -1,7 +1,7 @@
 
 ## perform the interaction based on cut-off
 
-DoInteractExp <- function(Predtargets=Drug.sim,Exp=Exp,DRS=DRS, GES=GES,CutOff  = 3 )
+DoInteractExp <- function(Predtargets,Exp,DRS,GES,CutOff=3 )
   {
     L.c <- list( KO= colnames(GES),
                  Drug_Prism= colnames(DRS),

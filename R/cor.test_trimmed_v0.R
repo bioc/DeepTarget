@@ -1,10 +1,7 @@
 ## this function is called by another main function.
+utils::globalVariables(c("C_pKendall", "C_pRho"))
 cor.test_trimmed_v0 <- function(x, ...) UseMethod("cor.test_trimmed_v0")
-
-#' cor.test_trimmed_v0.default
-#' Trimmed cor test that is faster than standard cor.test
 #' @export
-
 cor.test_trimmed_v0.default <-
   function(x, y, alternative = c("two.sided", "less", "greater"),
            method = c("pearson"), exact = NULL,

@@ -1,6 +1,6 @@
 ## plot the similarity based on corelation vals and p val.
 
-plotSim <- function(dx=d.Pval,dy=d.corr,clr=NULL, plot=TRUE){
+plotSim <- function(dx,dy,clr=NULL, plot=TRUE){
     if (is.null(clr)){ clr=colorRampPalette(c("lightblue",'darkblue'))}
     dx <- as.matrix(dx)
     dy <- as.matrix(dy)
