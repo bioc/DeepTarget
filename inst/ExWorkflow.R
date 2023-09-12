@@ -1,6 +1,4 @@
 ## this is the example script if the data contains multiple assays for a drug.
-rm(list=ls());
-library ( DeepTarget)
 data ("OntargetM")
 drug.name <- c('ibrutinib','palbociclib')
 #dir.create ( 'Result')
