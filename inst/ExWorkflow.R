@@ -54,7 +54,7 @@ Whether_interaction_Ex_based= ifelse ( out.LowexpTarget$MaxTgt_Inter_Exp_strengt
 predicted_resistance_mutation = ifelse ( out.MutantTarget$MaxTgt_Inter_Mut_Pval<0.1,TRUE,FALSE)
 ### if desired, save how many cellline has low expresion.
 Pred.d <- cbind ( DrugTargetSim,DrugGeneMaxSim,out.MutantTarget,predicted_resistance_mutation, out.LowexpTarget,Whether_interaction_Ex_based)
-Low.Exp = sapply(Pred.d[,3],function(x)errHandle(sum(d.expr[x,] < 2)) )
+Low.Exp = sapply (Pred.d[,3],function(x)errHandle(sum(d.expr[x,] < 2)) )
 ## save for later.
 Pred.d$lowExpCount<-Low.Exp
 ##
@@ -64,7 +64,7 @@ Pred.d$lowExpCount<-Low.Exp
 ## only use the rows with no NA.
 idx <- which ( Pred.d$lowExpCount>0)
 Pred.d.f <- Pred.d[idx ,]
-Low.Exp.G = sapply(Pred.d.f[,3], function(x) errHandle(names(which(d.expr[x,]<2))))
+Low.Exp.G = sapply (Pred.d.f[,3], function(x) errHandle(names(which(d.expr[x,]<2))))
 identical ( names(Low.Exp.G),Pred.d.f[,3] )
 ## only perform the gene has at least some celllines having low exp
 sim.LowExp <- NULL;
@@ -84,15 +84,15 @@ names(sim.LowExp) <-Pred.d.f[,1]
 ### plot and show the top 5 genes having the most corelation with drug when the primary is not expressed.
 ## make the function and use the sub function from dr. hu.
 
-sim.LowExp.Strength=sapply(sim.LowExp, function(x) x[,2])
+sim.LowExp.Strength=sapply (sim.LowExp, function(x) x[,2])
 head(sim.LowExp.Strength)
-sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
+sim.LowExp.Pval=sapply (sim.LowExp, function(x) x[,1])
 head(sim.LowExp.Pval)
 dim(sim.LowExp.Strength)
 #pdf ("Result/sim.low.exp.plot.pdf")
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(2,2));
 plotSim (sim.LowExp.Pval,sim.LowExp.Strength,colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
-dev.off();
+#dev.off();
 ## rcord these top 5 genes to the pred object.
 L.topG <- NULL;
 for ( i in 1:ncol(sim.LowExp.Strength)){
@@ -104,7 +104,7 @@ for ( i in 1:ncol(sim.LowExp.Strength)){
 Pred.d$top5GeneWlowEx <- "NA"
 Pred.d$top5GeneWlowEx [idx] <- L.topG
 H.topG <- NULL;
-simExp.Strength <- sapply(List.sim, function(x) x[,2])
+simExp.Strength <- sapply (List.sim, function(x) x[,2])
 dim(simExp.Strength)
 for ( i in 1:ncol(simExp.Strength)){
     top.5 <- names (sort(simExp.Strength[,i], decreasing=TRUE)[1:5])
@@ -122,25 +122,6 @@ Pred.d$top5Gene_Ex <- H.topG
 DOI = 'dabrafenib'
 GOI ='BRAF'
 head(Pred.d)
-## the first two cols is the drugs having two assays.
-## we know that sec.prism.f has the same order with Pred.d.
-which.mut <- which (Pred.d$predicted_resistance_mutation==TRUE);
-## plot mutant.
-## preaparing data
-for ( i in 1:length(which.mut)){
-    cr.i <- which.mut[i]
-    DOI = Pred.d[cr.i,2]
-    GOI =Pred.d[cr.i,3]
-    DRS=as.data.frame(sec.prism.f[cr.i,])
-    DRS <- t(DRS)
-    row.names(DRS) <- row.names(sec.prism.f)[cr.i]
-    head(DRS)
-    #pdf ( paste0("./Result/mutant_", row.names(Pred.d)[cr.i],".pdf"))
-    out <- DMB (DOI,GOI,Pred.d[cr.i,],d.mt,DRS,KO.GES,plot=TRUE)
-    print (out)
-    dev.off();
-}
-
 ## primary targeted.
 which.exp <- which (Pred.d$Whether_interaction_Ex_based==FALSE);
 for ( i in 1:length(which.exp )){
@@ -153,9 +134,8 @@ for ( i in 1:length(which.exp )){
     head(DRS)
     #pdf ( paste0("./Result/expr_", GOI,row.names(Pred.d)[cr.i],".pdf"))
     out <- DTR (DOI,GOI,Pred.d[cr.i,],d.expr,DRS,KO.GES,CutOff= 2)
-
     print (out)
-    dev.off();
+    #dev.off();
 }
 
 # based on the secondary targeted.
@@ -172,7 +152,7 @@ for ( i in 1:length(which.exp )){
     #pdf ( paste0("./Result/expr_", GOI,row.names(Pred.d)[cr.i],".pdf"))
     out <- DTR (DOI,GOI,Pred.d[cr.i,],d.expr,DRS,KO.GES,CutOff= 2)
     print (out)
-    dev.off();
+    #dev.off();
 }
 ### plot the correlation for the predited target.
 DOI = 'atiprimod'
@@ -188,7 +168,7 @@ for ( i in 1:length(idx)){
     head(DRS)
     #pdf ( paste0("./Result/Cor_plot_Predicted_Of", GOI,'of_',row.names(Pred.d[idx[i],]),".pdf"));
     plotCor(DOI,GOI,Pred.d[idx[i],],DRS,KO.GES,plot=TRUE);
-    dev.off()
+    #dev.off()
 }
 
 
