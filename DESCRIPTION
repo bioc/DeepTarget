@@ -1,12 +1,12 @@
 Package: DeepTarget
 Type: Package
 Title: Deep characterization of cancer drugs 
-Version: 0.99.8
+Version: 0.99.9
 Authors@R: c(
     person("Sanju", "Sinha", email = "sanju@terpmail.umd.edu", role ="aut"),
     person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre")),
     person("Ying", "Hu", email = "yhu@mail.nih.gov", role ="aut"))
-Description: Deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens.
+Description: DeepTarget is a computational tool for deep characterization of cancer drugs’ mechanism of action by integrating existing large-scale genetic and drug screens through https://depmap.org/repurposing/#:~:text=Corsello_supplemental_tables.xlsx
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

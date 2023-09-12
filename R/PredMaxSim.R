@@ -8,7 +8,6 @@ PredMaxSim <- function(Sim.GES.DRS,D.M){
     corrMat=sapply(Sim.GES.DRS, function(x) x[,2])
     ## calculate FDR.
     corrMatFDR=sapply(Sim.GES.DRS, function(x) x[,3])
-##############
     ## if there is one drug.
     if ( nrow(D.M.f)==1){
         BestTargetGene=rownames(corrMat)[which.max(corrMat[,1])]
@@ -21,16 +20,13 @@ PredMaxSim <- function(Sim.GES.DRS,D.M){
         BestTargetCorr=apply(corrMat,2, function(x) max(x, na.rm = T) )
         Drug.id = names(BestTargetGene)
     }
-Pred.sim=data.frame(
-    DrugID = Drug.id,
-    BestTargetGene=unlist(BestTargetGene),
-    BestTargetCorr=BestTargetCorr)
-# map to get the P val from best target gene
-Pred.sim$BestTargetCorrP = sapply(1:nrow(Pred.sim), function(x)
+    Pred.sim=data.frame(DrugID = Drug.id, BestTargetGene=unlist(BestTargetGene),BestTargetCorr=BestTargetCorr)
+    # map to get the P val from best target gene
+    Pred.sim$BestTargetCorrP = sapply(1:nrow(Pred.sim), function(x)
     errHandle(corrMatPval[Pred.sim[x,'BestTargetGene'], Pred.sim[x,1]]) )
-# Best Hit Significance - FDR corrected
-Pred.sim$BestTargetCorrFDR = sapply(1:nrow(Pred.sim), function(x)
-    errHandle(corrMatFDR[Pred.sim[x,'BestTargetGene'], Pred.sim[x,1]]) )
-Pred.sim
+    # Best Hit Significance - FDR corrected
+    Pred.sim$BestTargetCorrFDR = sapply(1:nrow(Pred.sim), function(x)
+    errHandle(corrMatFDR[Pred.sim[x,'BestTargetGene'], Pred.sim[x,1]]))
+    Pred.sim
 }
 

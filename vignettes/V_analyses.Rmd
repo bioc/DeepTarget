@@ -57,7 +57,7 @@ function.
 ```{r Computing Similarity Between Drug Treatment and Gene Knockout}
 List.sim <- NULL;
 for (i in 1:nrow(sec.prism.f)){
-    DRS=as.data.frame(sec.prism.f[i,])
+    DRS <- as.data.frame(sec.prism.f[i,])
     DRS <- t(DRS)
     row.names(DRS) <- row.names(sec.prism.f)[i]
     out <- GetSim(row.names(sec.prism.f)[i],DRS,KO.GES)
@@ -67,11 +67,8 @@ names(List.sim) <- row.names(sec.prism.f)
 #saveRDS(List.sim,file = 'Result/similarity_KO_DrugTreatment.RDS')
 
 ```
-DrugName,DRS,GES=KO.GES
 ## Performing Pathway Analysis Based on Drug Meta Data
-
 The script performs the pathway analyis based on the drug metadata using DoPWY function.
-
 ```{r Performing Pathway Analysis Based on Drug Meta Data}
 metadata <- OntargetM$DrugMetadata
 Pwy.Enr <- DoPWY(List.sim,metadata)
@@ -282,6 +279,7 @@ dim(sim.LowExp.Strength)
 sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
 head(sim.LowExp.Pval)
 ## Let's take a look at ibrutinib
+par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(1,2));
 plotSim(sim.LowExp.Pval[,8],sim.LowExp.Strength[,8],colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
 
 ```
@@ -296,7 +294,7 @@ of evidence that Ibrutinib binds physically to EGFR. Thus, let’s focus further
 ```{r Conclusion}
 DOI="ibrutinib"
 GOI="EGFR"
-out <- DTR(DOI,GOI,Pred.d[14,],d.expr,DRS,KO.GES,CutOff= 2)
+out <- DTR (DOI,GOI,Pred.d[14,],d.expr,DRS,KO.GES,CutOff= 2)
 print (out)
 
 ```

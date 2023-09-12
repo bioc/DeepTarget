@@ -1,5 +1,4 @@
 ## Plot for Drug target response for primary or secondary.
-
 DTR <- function(DN,GN,Pred,Exp,DRS,GES,CutOff=3,plot=TRUE ){
     ## need to add to catch error.
     ## expression we have two cases, primary and secondary.
@@ -7,7 +6,7 @@ DTR <- function(DN,GN,Pred,Exp,DRS,GES,CutOff=3,plot=TRUE ){
     L.c <- list( KO= colnames(GES),
                  Drug_Prism= colnames(DRS),
                  Expr= colnames(Exp))
-    CL.M = Reduce(intersect,L.c)
+    CL.M <- Reduce(intersect,L.c)
     if ( DN %in% Pred[,2]){
         if (plot) {
         exp.g <- Exp[GN,CL.M]< CutOff

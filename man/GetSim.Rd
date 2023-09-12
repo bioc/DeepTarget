@@ -32,7 +32,6 @@ KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
 sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
 names(sim) <- S.Drugs
-#saveRDS(sim,
-  #      file = paste('drugVScrispr.Similarity.List.RDS', Sys.Date(), '.RDS', sep=''))
+head(sim)
 }
 

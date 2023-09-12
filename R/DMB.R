@@ -1,4 +1,3 @@
-
 DMB <- function(DrugName,GOI,Pred,Mutant,DRS,GES,plot=TRUE){
     ## checking to see whether the drug name exist in the Pred object.
     ## get the overlapped.
