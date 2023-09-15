@@ -1,6 +1,6 @@
 ## perform the interaction based on cut-off
 DoInteractMutant <- function(Predtargets,Mutant,DRS,GES){
-    #getting only the overlapped samples. The best way to do is to get overlapped samples for all.
+    #getting only the overlapped samples
     L.c <- list( KO= colnames(GES),
                 Drug_Prism= colnames(DRS),
                 Mutation= colnames(Mutant))
@@ -10,10 +10,11 @@ DoInteractMutant <- function(Predtargets,Mutant,DRS,GES){
             DRS.f <- errHandle(DRS[Predtargets[x,1],CL.M])
             ## Gene effect scores based on the targeted gene
             GES.f <- errHandle(GES[Predtargets[x,3],CL.M])
-            ## groups based on the cut-off. Lower and higher based on the targed gene
             Mutant.Group <- errHandle(Mutant[Predtargets[x,3],CL.M] )
             ## True is low, False is high.
-            errHandle(summary(lm(DRS.f ~ GES.f * Mutant.Group))$coefficients[4,c(1,4)])})
+            errHandle(summary(
+                lm(DRS.f ~ GES.f * Mutant.Group))$coefficients[4,c(1,4)])
+            })
     names(interactFeatures) <- Predtargets$drugName
     interactFeatures
 }

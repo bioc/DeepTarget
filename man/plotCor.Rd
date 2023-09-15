@@ -10,32 +10,17 @@ Plot the correlation of the predicted target
 plotCor(DN,GN,Pred,DRS,GES,plot=TRUE)
 }
 \arguments{
-  \item{DN}{
-Drug Name
+    \item{DN}{Drug Name}
+    \item{GN}{Gene Name}
+    \item{Pred}{Output from prediction object}
+    \item{DRS}{Drug response score}
+    \item{GES}{Gene Effect scores}
+    \item{plot}{ default is plot=TRUE}
 }
-  \item{GN}{
-Gene Name
-}
-  \item{Pred}{
-Output from prediction object
-}
-  \item{DRS}{
-Drug response score
-}
-  \item{GES}{
-Gene Effect scores
-}
-  \item{plot}{
-}
-}
-
-\value{
-Correlation plot
-}
+\value{Correlation plot}
 \author{
 sanjusinha7, Trinh Nguyen
 }
-
 \examples{
 library(parallel)
 data (OntargetM)

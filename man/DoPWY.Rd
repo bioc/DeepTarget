@@ -10,12 +10,8 @@ DoPWY(Sim.GES.DRS,D.M)
 }
 
 \arguments{
-\item{Sim.GES.DRS}{
-The list of result from "CorCRISPRDrugR" function.
-}
-\item{D.M}{
-meta data from drug
-}
+    \item{Sim.GES.DRS}{The list of result from "CorCRISPRDrugR" function.}
+    \item{D.M}{meta data from drug}
 }
 
 \value{
@@ -25,9 +21,7 @@ a dataframe contain the pathway level probability to be a primary MOA
     \item{drugN }{a dataframe contain the pathway level probability to be a primary MOA}
 }
 
-\author{
- sanjusinha7, Trinh Nguyen
-}
+\author{sanjusinha7, Trinh Nguyen}
 
 \examples{
 library(parallel)

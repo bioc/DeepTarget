@@ -11,23 +11,18 @@ DoInteractMutant(Predtargets,Mutant,DRS,GES)
 }
 
 \arguments{
- \item{Predtargets}{a table of drug information and their most targeted gene with stats of correlation}
-\item{Mutant}{Mutant matrix}
-\item{DRS}{Drug scores}
-\item{GES}{Gene effect scores from KO method}
+    \item{Predtargets}{a table of drug information and their most target gene with stats of correlation}
+    \item{Mutant}{Mutant matrix}
+    \item{DRS}{Drug scores}
+    \item{GES}{Gene effect scores from KO method}
 }
-
 \value{
 A list of drug names with their interaction values from two groups mutant and non-mutant
     \item{drug1 }{interaction with estimate and P vals}
     \item{drug2 }{interaction with estimate and P vals}
-     \item{drugN }{interaction with estimate and P vals}
-     }
-     
-\author{
-sanjusinha7, Trinh Nguyen
+    \item{drugN }{interaction with estimate and P vals}
 }
-
+\author{sanjusinha7, Trinh Nguyen}
 \examples{
 library(parallel)
 data (OntargetM)

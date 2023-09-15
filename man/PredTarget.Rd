@@ -6,29 +6,19 @@ Prediction  of the most similar known targeted gene.
 \description{
 Predicts the gene that has the most similarity to a drug’s response scores across targeted genes
 }
-
 \usage{
-
 PredTarget(Sim.GES.DRS,D.M)
 }
-
 \arguments{
-  \item{Sim.GES.DRS}{
-    similarity between Drug’s response scores and Gene effect scores from Knock-out method such as CRISPR.
+    \item{Sim.GES.DRS}{similarity between Drug’s response scores and Gene effect scores from Knock-out method such as CRISPR.}
+    \item{D.M}{Drug Metadata}
 }
-  \item{D.M}{
-   Drug Metadata
-}
-}
-
 \value{
 a table of drug information and their most targeted gene with stats of correlation.
 }
-
 \author{
 sanjusinha7, Trinh Nguyen
 }
-
 \examples{
 library(parallel)
 library(DeepTarget)

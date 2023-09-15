@@ -1,7 +1,9 @@
 ## this function is called by another main function.
 ## Revised not to calculate 95% confidence level.
 utils::globalVariables(c("C_pKendall", "C_pRho"))
-cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less", "greater"), method = c("pearson"), exact = NULL,continuity = FALSE, ...)
+cor.test_trimmed_v0.default <- function(x, y, 
+    alternative = c("two.sided", "less", "greater"), 
+    method = c("pearson"), exact = NULL,continuity = FALSE, ...)
     {
         alternative <- match.arg(alternative)
         method <- match.arg(method)
@@ -44,13 +46,12 @@ cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less
             #   cint <- tanh(cint)
             #   attr(cint, "conf.level") <- conf.level
             # }
-            PVAL <- switch(alternative,
-                           "less" = pt(STATISTIC, df),
-                           "greater" = pt(STATISTIC, df, lower.tail=FALSE),
-                           "two.sided" = 2 * min(pt(STATISTIC, df),
-                                                 pt(STATISTIC, df, lower.tail=FALSE)))
-        }
-        else {
+            PVAL <- switch(
+                alternative,"less" = pt(STATISTIC, df),
+                "greater" = pt(STATISTIC, df, lower.tail=FALSE),
+                "two.sided" = 2 * min(pt(STATISTIC, df),pt(STATISTIC, df, lower.tail=FALSE))
+                )
+        }else {
             if(n < 2)
                 stop("not enough finite observations")
             PARAMETER <- NULL
@@ -60,13 +61,11 @@ cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less
                 names(NVAL) <- "tau"
                 r <- cor(x,y, method = "kendall")
                 ESTIMATE <- c(tau = r)
-                
                 if(!is.finite(ESTIMATE)) {  # all x or all y the same
                     ESTIMATE[] <- NA
                     STATISTIC <- c(T = NA)
                     PVAL <- NA
-                }
-                else {
+                }else {
                     if(is.null(exact))
                         exact <- (n < 50)
                     if(exact && !TIES) {
@@ -75,16 +74,15 @@ cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less
                         pkendall <- function(q, n) .Call(C_pKendall, q, n)
                         PVAL <-
                             switch(alternative,
-                                   "two.sided" = {
-                                       if(q > n * (n - 1) / 4)
-                                           p <- 1 - pkendall(q - 1, n)
-                                       else
-                                           p <- pkendall(q, n)
-                                       min(2 * p, 1)
-                                   },
-                                   "greater" = 1 - pkendall(q - 1, n),
-                                   "less" = pkendall(q, n))
-                    } else {
+                                "two.sided" = {
+                                    if(q > n * (n - 1) / 4)
+                                        p <- 1 - pkendall(q - 1, n)
+                                    else
+                                        p <- pkendall(q, n)
+                                        min(2 * p, 1)},
+                                "greater" = 1 - pkendall(q - 1, n),
+                                "less" = pkendall(q, n))
+                    }else {
                         xties <- table(x[duplicated(x)]) + 1
                         yties <- table(y[duplicated(y)]) + 1
                         T0 <- n * (n - 1)/2
@@ -94,26 +92,26 @@ cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less
                         v0 <- n * (n - 1) * (2 * n + 5)
                         vt <- sum(xties * (xties - 1) * (2 * xties + 5))
                         vu <- sum(yties * (yties - 1) * (2 * yties + 5))
-                        v1 <- sum(xties * (xties - 1)) * sum(yties * (yties - 1))
-                        v2 <- sum(xties * (xties - 1) * (xties - 2)) *
-                            sum(yties * (yties - 1) * (yties - 2))
-                        
+                        v1 <- sum(
+                            xties * (xties - 1)) * sum(yties * (yties - 1)
+                            )
+                        v2 <- sum(
+                            xties * (xties - 1) * (xties - 2)) * sum(yties * (yties - 1) * (yties - 2)
+                            )
                         var_S <- (v0 - vt - vu) / 18 +
                             v1 / (2 * n * (n - 1)) +
                             v2 / (9 * n * (n - 1) * (n - 2))
-                        
                         if(exact && TIES)
                             warning("Cannot compute exact p-value with ties")
                         if (continuity) S <- sign(S) * (abs(S) - 1)
                         STATISTIC <- c(z = S / sqrt(var_S))
-                        PVAL <- switch(alternative,
-                                       "less" = pnorm(STATISTIC),
-                                       "greater" = pnorm(STATISTIC, lower.tail=FALSE),
-                                       "two.sided" = 2 * min(pnorm(STATISTIC),
-                                                             pnorm(STATISTIC, lower.tail=FALSE)))
+                        PVAL <- switch(
+                            alternative,"less" = pnorm(STATISTIC),
+                            "greater" = pnorm(STATISTIC, lower.tail=FALSE),
+                            "two.sided" = 2 * min(pnorm(STATISTIC),pnorm(STATISTIC, lower.tail=FALSE)))
                     }
                 }
-            } else {
+            }else {
                 method <- "Spearman's rank correlation rho"
                 if (is.null(exact))
                     exact <- TRUE
@@ -124,8 +122,7 @@ cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less
                     ESTIMATE[] <- NA
                     STATISTIC <- c(S = NA)
                     PVAL <- NA
-                }
-                else {
+                }else {
                     ## Use the test statistic S = sum(rank(x) - rank(y))^2
                     ## and AS 89 for obtaining better p-values than via the
                     ## simple normal approximation.
@@ -139,40 +136,35 @@ cor.test_trimmed_v0.default <- function(x, y, alternative = c("two.sided", "less
                             if (continuity) den <- den + 1
                             r <- 1 - q/den
                             pt(r / sqrt((1 - r^2)/(n-2)), df = n-2,
-                               lower.tail = !lower.tail)
-                        }
-                    }
+                               lower.tail = !lower.tail)}}
                     q <- (n^3 - n) * (1 - r) / 6
                     STATISTIC <- c(S = q)
                     if(TIES && exact){
                         exact <- FALSE
                         warning("Cannot compute exact p-value with ties")
                     }
-                    PVAL <-
-                        switch(alternative,
+                    PVAL <-switch(alternative,
                                "two.sided" = {
                                    p <- if(q > (n^3 - n) / 6)
-                                       pspearman(q, n, lower.tail = FALSE)
-                                   else
-                                       pspearman(q, n, lower.tail = TRUE)
-                                   min(2 * p, 1)
-                               },
+                                            pspearman(q, n, lower.tail = FALSE)
+                                        else
+                                            pspearman(q, n, lower.tail = TRUE)
+                                    min(2 * p, 1)},
                                "greater" = pspearman(q, n, lower.tail = TRUE),
                                "less" = pspearman(q, n, lower.tail = FALSE))
                 }
             }
         }
-        
         RVAL <- list(
-            # statistic = STATISTIC,
-            # parameter = PARAMETER,
-            p.value = as.numeric(PVAL),
-            estimate = ESTIMATE
-            # ,
-            # null.value = NVAL,
-            # alternative = alternative,
-            # method = method,
-            # data.name = DNAME
+        # statistic = STATISTIC,
+        # parameter = PARAMETER,
+        p.value = as.numeric(PVAL),
+        estimate = ESTIMATE
+        # ,
+        # null.value = NVAL,
+        # alternative = alternative,
+        # method = method,
+        # data.name = DNAME
         )
         # if(conf.int)
         #   RVAL <- c(RVAL, list(conf.int = cint))

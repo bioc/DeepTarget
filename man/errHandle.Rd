@@ -12,11 +12,11 @@ errHandle(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+    \item{x}{expression value}
 }
+\value{
+error handling: if an error occurs it returns NA instead
 }
-
 \author{
 sanjusinha7
 }

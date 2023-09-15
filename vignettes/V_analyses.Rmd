@@ -99,9 +99,9 @@ for (i in 1:nrow(sec.prism.f)){
     row.names(DRS) <- row.names(sec.prism.f)[i]
     ## for mutant
     Out.M <- DoInteractMutant(DrugTargetSim[i,],d.mt,DRS,KO.GES)
-    TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength= sapply(Out.M, function(x) x[1]), 
-                                       MaxTgt_Inter_Mut_Pval=sapply(Out.M, function(x) x[2]))
-    out.MutantTarget <- rbind (out.MutantTarget,TargetMutSpecificity)
+    TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength=sapply(Out.M, function(x) x[1]), 
+                                  MaxTgt_Inter_Mut_Pval=sapply(Out.M, function(x) x[2]))
+    out.MutantTarget <- rbind(out.MutantTarget,TargetMutSpecificity)
     ## for expression.
     Out.Expr <- DoInteractExp(DrugTargetSim[i,],d.expr,DRS,KO.GES,CutOff= 2)
     TargetExpSpecificity <- data.frame(

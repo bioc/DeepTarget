@@ -12,33 +12,22 @@ cor.test_trimmed_v0.default(x, y, alternative = c("two.sided", "less", "greater"
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-Drug response matrix
-}
-  \item{y}{
-avana_CRISPR Matrix
-}
-  \item{alternative}{
-option can be chosen as "two.sided", "less", "greater"
-}
-  \item{method}{
-"pearson"
-}
-  \item{exact}{
-can be NULL
-}
-  \item{continuity}{
-can be FALSE
-}
-  \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
-}
+    \item{x}{Drug response matrix}
+    \item{y}{avana_CRISPR Matrix}
+    \item{alternative}{option can be chosen as "two.sided", "less", "greater"}
+    \item{method}{default is "pearson"}
+    \item{exact}{default is NULL}
+    \item{continuity}{default is FALSE}
+    \item{\dots}{ default is NULL}
 }
 \details{
 this function is called by another main function from DeepTarget
 }
 \references{
 The code is adopted from https://github.com/SurajGupta/r-source/blob/master/src/library/stats/R/cor.test.R
+}
+\value{
+corellation values of the drug scores and Knock-out effect scores.
 }
 \author{
 SurajGupta

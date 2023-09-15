@@ -6,15 +6,9 @@ Computes correlations between the viability of cell lines after CRISPR knockout 
 }
 \usage{GetSim(DrugName,DRS,GES)}
 \arguments{
-  \item{DrugName}{
-     Drug Name
-}
-  \item{DRS}{
-      Drug’s response scores
-}
-  \item{GES}{
-      Gene effect scores from Knock-out method such as CRISPR.
-}
+    \item{DrugName}{Drug Name}
+    \item{DRS}{Drug’s response scores}
+    \item{GES}{Gene effect scores from Knock-out method such as CRISPR.}
 }
 \value{
 A dataframe containing genes with their correlation values and P values associated with response scores from a given drug ID.

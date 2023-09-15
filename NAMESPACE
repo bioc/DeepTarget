@@ -31,6 +31,8 @@ import('stringr')
 import('tictoc')
 import ('rlang')
 import('grDevices')
+import('graphics')
+
 importFrom(pROC, var)
 importFrom(pROC, cov)
 importFrom(pROC, smooth)
@@ -41,8 +43,12 @@ importFrom(stats, na.omit)
 importFrom(stats, p.adjust)
 importFrom(stats, pnorm)
 importFrom(stats, pt)
-importFrom("grDevices", "colorRampPalette")
-importFrom("graphics", "grconvertX", "grconvertY", "par", "rect","segments", "text")
+importFrom(graphics, segments)
+importFrom(graphics, text)
+importFrom(graphics, rect)
+importFrom(graphics, par)
+importFrom(grDevices, colorRampPalette)
+
 
 
 

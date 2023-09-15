@@ -10,24 +10,15 @@ Plot the similarty between corelation values and P val;
 plotSim(dx,dy,clr=NULL, plot=TRUE)
 }
 \arguments{
-  \item{dx}{
-a matrix of p vals
+    \item{dx}{a matrix of p vals}
+    \item{dy}{a matrix of correlation vals}
+    \item{clr}{Desired color}
+    \item{plot}{ default plot =TRUE}
 }
-  \item{dy}{
-a matrix of correlation vals
-}
-  \item{clr}{
-Desired color
-}
-  \item{plot}{
-%%     ~~Describe \code{plot} here~~
-}
-}
-
+\value{a plot of similarity}
 \author{
 Ying Hu,Trinh Nguyen
 }
-
 \examples{
 library(parallel)
 data (OntargetM)

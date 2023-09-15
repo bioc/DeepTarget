@@ -10,11 +10,11 @@ This function is used in conjunction with the colorBar function to create color 
 line2user(line, side)
 }
 \arguments{
-  \item{line}{
+    \item{line}{a round number such as 2}
+    \item{side}{a round number such as 3}
 }
-  \item{side}{
-%%     ~~Describe \code{side} here~~
-}
+\value{
+create a color bar placed in the top middle of a plot.
 }
 \author{
 Ying Hu <yhu@mail.nih.gov>

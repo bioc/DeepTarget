@@ -10,20 +10,13 @@ Predicts the gene that has the most similarity associated with drug’s response
 PredMaxSim (Sim.GES.DRS,D.M)
 }
 \arguments{
-  \item{Sim.GES.DRS}{
-similarity between Drug’s response scores and Gene effect scores from Knock-out method such as CRISPR.
-}
-  \item{D.M}{
-      Drug Metadata
-}
+    \item{Sim.GES.DRS}{similarity between Drug’s response scores and Gene effect scores from Knock-out method such as CRISPR}
+    \item{D.M}{Drug Metadata}
 }
 \value{
 a table of drug information and the most correlated gene across all genes.
 }
-
-\author{
- sanjusinha7, Trinh Nguyen
-}
+\author{sanjusinha7, Trinh Nguyen}
 \examples{
 library(parallel)
 data (OntargetM)

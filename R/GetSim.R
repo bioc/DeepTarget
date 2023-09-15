@@ -3,7 +3,9 @@ GetSim <- function(DrugName,DRS,GES){
     common.c <- intersect(colnames(DRS),colnames(GES))
     DRS.c<- DRS[DrugName,common.c ]
     GES.c<- GES[,common.c]
-    out.Sim.GES.DRS <- sapply(1:nrow(GES.c),function(x) unlist(cor.test_trimmed_v0.default(DRS.c, GES.c[x,])))
+    out.Sim.GES.DRS <- sapply(
+        1:nrow(GES.c),
+        function(x) unlist(cor.test_trimmed_v0.default(DRS.c, GES.c[x,])))
     out.Sim.GES.DRS <- t(out.Sim.GES.DRS)
     row.names(out.Sim.GES.DRS  ) <- row.names(GES.c)
     FDR <- fdrCor(out.Sim.GES.DRS[,1])

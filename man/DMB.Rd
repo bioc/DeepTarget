@@ -8,27 +8,13 @@ Generates a plot of Drug target response for primary or secondary targets based 
 DMB(DrugName,GOI,Pred,Mutant,DRS,GES,plot=TRUE)
 }
 \arguments{
-  \item{DrugName}{
-Drug of interest
-}
-\item{GOI}{
-Gene of interest
-}
-  \item{Pred}{
-Prediction object, an output result from prediction whether it is a primary target or secondary target
-}
-  \item{Mutant}{
-Mutant matrix
-}
-  \item{DRS}{
-Drug response matrix
-}
-  \item{GES}{
-Gene Effect Scores
-}
-  \item{plot}{
-Default is TRUE for plotting
-}
+    \item{DrugName}{Drug of interest}
+    \item{GOI}{Gene of interest}
+    \item{Pred}{Prediction object, an output result from prediction whether it is a primary target or secondary target}
+    \item{Mutant}{Mutant matrix}
+    \item{DRS}{Drug response matrix}
+    \item{GES}{Gene Effect Scores}
+    \item{plot}{Default is TRUE for plotting}
 }
 \value{
 vialbility after KO vs drug response in mutant.

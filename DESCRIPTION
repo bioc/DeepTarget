@@ -1,7 +1,7 @@
 Package: DeepTarget
 Type: Package
 Title: Deep characterization of cancer drugs 
-Version: 0.99.10
+Version: 0.99.11
 Authors@R: c(
     person("Sanju", "Sinha", email = "sanju@terpmail.umd.edu", role ="aut"),
     person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre")),
@@ -15,5 +15,5 @@ RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 LazyDataCompression:xz
-Imports: rlang, tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, parallel, pROC, ggrepel,grid, gridExtra, stringb, readxl, stringr, stats
+Imports: rlang, tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, parallel, pROC, ggrepel,grid, gridExtra, stringb, readxl, stringr, stats,grDevices,graphics
 Depends: R (>= 3.5.0)

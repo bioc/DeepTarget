@@ -12,40 +12,17 @@ DTR(DN,GN,Pred,Exp,DRS,GES,CutOff= 3,plot = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{DN}{
-Drug of interest
+    \item{DN}{Drug of interest}
+    \item{GN}{Gene of interest}
+    \item{Pred}{Prediction object, an output result from prediction whether it is a primary target or secondary target}
+    \item{Exp}{Expression matrix}
+    \item{DRS}{Drug response matrix}
+    \item{GES}{Gene Effect Scores}
+    \item{plot}{whether users want to plot, default is true}
+    \item{CutOff}{cutoff value for gene expression of gene of interest high or low}
 }
-  \item{GN}{
-Gene of interest
-}
-  \item{Pred}{
-Prediction object, an output result from prediction whether it is a primary target or secondary target
-}
-  \item{Exp}{
-Expression matrix
-}
-  \item{DRS}{
-Drug response matrix
-}
-  \item{GES}{
-Gene Effect Scores
-}
-  \item{plot}{
-whether users want to plot, default is true
-}
-  \item{CutOff}{
-cutoff value for gene expression of gene of interest high or low
-}
-}
-
-\value{
-vialbility after KO vs drug response of gene of interest low vs high
-}
-
-\author{
- sanjusinha7
-}
-
+\value{vialbility after KO vs drug response of gene of interest low vs high}
+\author{sanjusinha7, Trinh Nguyen}
 \examples{
 library(parallel)
 data (OntargetM)
