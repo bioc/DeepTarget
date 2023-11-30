@@ -1,4 +1,5 @@
-colorBar<- function(xl, yb, xr, yt, v.min, v.max, col.l, alpha=1, color.spec="hsv",  title="") {
+# a helper function to plot a color bar.
+colorBar<- function(xl, yb, xr, yt, v.min, v.max, col.l, alpha=1, color.spec="hsv",title=""){
     nticks <- 11; 
     ticks  <- seq(v.min, v.max, len=nticks);
     tmp.v  <- seq(v.min, v.max, length.out=100)
@@ -6,7 +7,8 @@ colorBar<- function(xl, yb, xr, yt, v.min, v.max, col.l, alpha=1, color.spec="hs
     #lut   <- colorRampPalette(c("white", "red"))(100);
     xs    <- (xr-xl)/(length(lut)-1);
     xl.old <- xl;
-    for (i in 1:(length(lut)-1)) {
+    # change from 1:(length(lut)-1) to seq_len(length(lut)-1))
+    for (i in seq_len(length(lut)-1)) {
         rect(xl.old, yb, xl.old+xs, yt, col=lut[i], border=NA)
         xl.old <- xl.old + xs;
     }

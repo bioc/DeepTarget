@@ -1,38 +1,33 @@
 \name{OntargetM}
 \alias{OntargetM}
 \docType{data}
-\title{an object containing a small part of data to demonstrate in DeepTarget pipeline}
+\title{An object containing a small part of the data from the Cancer Dependency Map (depmap.org) to demonstrate in DeepTarget pipeline}
 \description{
-an object containing Viability matrix after CRISPR-KO; Viability after Drug Treatment; Drug metadata from Broad, mutation matrix, and expression matrix with common celllines and common drugs.
+An object containing Viability matrix after CRISPR-KO; Viability after Drug Treatment; Drug metadata from Broad, mutation matrix, and expression matrix with common cell-lines and common drugs. This is a subset of the total data due to memory constraints, full data can be downloaded from depmap.org/portal.
 }
 \usage{data("OntargetM")}
-\format{A list of 5 matrices
+\format{A list of one dataframe and 4 matrices
     \describe{
-        \item{\code{DrugMetadata}}{containing 11 unique drugs with 5 columns:  broad_id_trimmed, name, target, drug_category, and moa}
-        \item{\code{secondary_prism}}{containing Viability scores after Drug Treatment with 16 drugs across 392 unique celllines}
-        \item{\code{avana_CRISPR}}{containing Gene effect scores after CRISPR-KO with 488 genes across 392 unique celllines. This is version 22Q4}
-        \item{\code{mutations_mat}}{Mutation binary matrix for 470 genes across 392 unique cell lines; 0 is WT; 1 is mutated}
-        \item{\code{expression_20Q4}}{ Expression profile of 392 unique celllines for 551 genes}
-  }
+        \item{\code{DrugMetadata}}{a dataframe containing 11 unique drugs as rownames with their associated information:  broad_id_trimmed as ID of the drug, name, target, drug_category, and moa as columns}
+        \item{\code{secondary_prism}}{a viability scores matrix (after Drug Treatment) with 16 drugs as row names across 392 unique celllines as column names}
+        \item{\code{avana_CRISPR}}{a Gene effect scores (after CRISPR-KO) matrix for 487 genes as row names across 392 unique celllines as column names}
+        \item{\code{mutations_mat}}{Mutation binary matrix for 476 genes as row names across 392 unique cell lines as column names; 0 is WT; 1 is mutated}
+        \item{\code{expression_20Q4}}{ Expression matrix for  550 genes as row names across 392 unique celllines as column names}
+    }
 }
 \details{
-For a full list data for these matrices , please use the link below to download or contact us @ tinh.nguyen@nih.gov.
+For a full list data used in the paper, please use the link below to download data
 }
 \source{
-DrugMetadata
-depmap \url{ https://depmap.org/repurposing/#:~:text=Corsello_supplemental_tables.xlsx}
-Secondary prism
-depmap \url{https://depmap.org/portal/download/all/?releasename=PRISM+Repurposing+19Q4&filename=secondary-screen-dose-response-curve-parameters.csv}
-avana_CRISPR
-depmap \url{https://depmap.org/portal/download/all/?releasename=DepMap+Public+22Q4&filename=CRISPRGeneEffect.csv}
-mutations_mat
-Mutation binary profile for ~2K cell lines; 0 is WT; 1 is mutated
+DrugMetadata: Please download full data from this link \url{ https://depmap.org/repurposing/#:~:text=Corsello_supplemental_tables.xlsx}
 
-depmap \url{https://depmap.org/portal/download/all/?releasename=DepMap+Public+22Q4&filename=OmicsSomaticMutations.csv}
+Secondary prism: please download full data from this link \url{https://depmap.org/portal/download/all/?releasename=PRISM+Repurposing+19Q4&filename=secondary-screen-dose-response-curve-parameters.csv}
 
-expression_20Q4
-Expression profile of ~2K cell lines for 20K genes; file name: OmicsExpressionProteinCodingGenesTPMLogp1.csv
-depmap \url{https://depmap.org/portal/download/all/}
+avana_CRISPR: please download full data from this link \url{https://depmap.org/portal/download/all/?releasename=DepMap+Public+22Q4&filename=CRISPRGeneEffect.csv}
+
+mutations_mat:  Please download full data from this link \url{https://depmap.org/portal/download/all/?releasename=DepMap+Public+22Q4&filename=OmicsSomaticMutations.csv}
+
+expression_20Q4: Please download full data of file named OmicsExpressionProteinCodingGenesTPMLogp1.csv from this link \url{https://depmap.org/portal/download/all/}
 
 }
 \examples{

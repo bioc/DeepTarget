@@ -1,19 +1,17 @@
 Package: DeepTarget
 Type: Package
 Title: Deep characterization of cancer drugs 
-Version: 0.99.11
+Version: 0.99.12
 Authors@R: c(
     person("Sanju", "Sinha", email = "sanju@terpmail.umd.edu", role ="aut"),
-    person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre")),
+    person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre"),comment=c(ORCID="0000-0002-6606-6948")),
     person("Ying", "Hu", email = "yhu@mail.nih.gov", role ="aut"))
-Description: This package spans about 1500 drugs across about 18K possible target genes in order to predict the drug’s primary target(s) or secondary target. Tt also further investigate whether the primary target  specifically targets the wild-type or mutated target forms.
+Description: This package predicts a drug’s primary target(s) or secondary target(s) by integrating large-scale genetic and drug screens from the Cancer Dependency Map project run by the Broad Institute. It further investigates whether the drug specifically targets the wild-type or mutated target forms. To show how to use this package in practice, we provided sample data along with step-by-step example.
 License: GPL-2
 Encoding: UTF-8
-LazyData: true
-biocViews: GeneTarget, GenePrediction,Pathways, GeneExpression, RNASeq, ImmunoOncology,DifferentialExpression, GeneSetEnrichment, ReportWriting
+biocViews: GeneTarget, GenePrediction,Pathways, GeneExpression, RNASeq, ImmunoOncology,DifferentialExpression, GeneSetEnrichment, ReportWriting,CRISPR
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
-LazyDataCompression:xz
-Imports: rlang, tictoc, fgsea, ggplot2, ggpubr, statar, interactions, reshape2, parallel, pROC, ggrepel,grid, gridExtra, stringb, readxl, stringr, stats,grDevices,graphics
-Depends: R (>= 3.5.0)
+Imports: fgsea, ggplot2, stringr, ggpubr, BiocParallel, pROC, stats, grDevices, graphics
+Depends: R (>= 4.2.0)

@@ -1,11 +1,10 @@
 \name{DTR}
 \alias{DTR}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plot of drug target response for primary or secondary targets
+Predicting Drug Target Response (DTR) for primary or secondary targets
 }
 \description{
-Generates a plot of drug target response for primary or secondary targets based on a drug of interest and a gene of interest.
+Predicting whether the drug is likely response to primary or secondary targets and also generates the plot for visualization.
 }
 \usage{
 DTR(DN,GN,Pred,Exp,DRS,GES,CutOff= 3,plot = TRUE)
@@ -21,22 +20,21 @@ DTR(DN,GN,Pred,Exp,DRS,GES,CutOff= 3,plot = TRUE)
     \item{plot}{whether users want to plot, default is true}
     \item{CutOff}{cutoff value for gene expression of gene of interest high or low}
 }
-\value{vialbility after KO vs drug response of gene of interest low vs high}
+\value{vialbility after KO vs drug response of gene of interest low vs high cut-off values set by users}
 \author{sanjusinha7, Trinh Nguyen}
 \examples{
-library(parallel)
+library(BiocParallel)
 data (OntargetM)
-library(parallel)
 set.seed (12345)
 S.Drugs <- c('K70301465','K09951645')
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
 d.expr <- OntargetM$expression_20Q4
-sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
-names(sim) <- S.Drugs
+sim.out <- bplapply(S.Drugs,function(x) computeCor(x,sec.prism,KO.GES))
+names(sim.out) <- S.Drugs
 Meta.data <- OntargetM$DrugMetadata
-DrugTargetSim <- PredTarget(sim,Meta.data)
-Drug.Gene.max.sim <- PredMaxSim(sim,Meta.data)
+DrugTargetSim <- PredTarget(sim.out,Meta.data)
+Drug.Gene.max.sim <- PredMaxSim(sim.out,Meta.data)
 identical ( DrugTargetSim[,1],Drug.Gene.max.sim[,1] )
 Pred.d <-cbind (DrugTargetSim,Drug.Gene.max.sim )
 DOI = 'ibrutinib'

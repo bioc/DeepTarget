@@ -1,8 +1,5 @@
-
+## Function to generate a correlation plot for a target.
 plotCor <- function(DN,GN,Pred,DRS,GES,plot=TRUE){
-    ## need to add to catch error.
-    ## checking to see whether the drug name exist in the Pred object.
-    ## get the overlapped.
     if (nrow (Pred)==0) {stop("Pred should contain drug of interest")}
     L.c <- list( KO= colnames(GES),Drug_Prism= colnames(DRS))
     CL.M <- Reduce(intersect,L.c)
@@ -12,7 +9,6 @@ plotCor <- function(DN,GN,Pred,DRS,GES,plot=TRUE){
             DRS.c <- DRS[Pred[DN,1],CL.M]
             dat.c <- data.frame(GES.c,DRS.c)
             ggplot(dat.c, aes(x = GES.c, y = DRS.c))+
-                #scale_color_manual(values = c("cyan",'red')) +
                 geom_point()+
                 stat_smooth(method = 'lm')+
                 theme_bw(base_size = 15)+

@@ -4,7 +4,7 @@
 Plot the correlation
 }
 \description{
-Plot the correlation of the predicted target
+Plot the correlation of a predicted target
 }
 \usage{
 plotCor(DN,GN,Pred,DRS,GES,plot=TRUE)
@@ -22,18 +22,18 @@ plotCor(DN,GN,Pred,DRS,GES,plot=TRUE)
 sanjusinha7, Trinh Nguyen
 }
 \examples{
-library(parallel)
+library(BiocParallel)
 data (OntargetM)
 set.seed (12345)
 S.Drugs <- c('K70301465','K09951645')
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
 d.expr <- OntargetM$expression_20Q4
-sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
-names(sim) <- S.Drugs
+sim.out <- bplapply(S.Drugs,function(x) computeCor(x,sec.prism,KO.GES))
+names(sim.out) <- S.Drugs
 Meta.data <- OntargetM$DrugMetadata
-DrugTargetSim <- PredTarget(sim,Meta.data)
-Drug.Gene.max.sim <- PredMaxSim(sim,Meta.data)
+DrugTargetSim <- PredTarget(sim.out,Meta.data)
+Drug.Gene.max.sim <- PredMaxSim(sim.out,Meta.data)
 identical ( DrugTargetSim[,1],Drug.Gene.max.sim[,1] )
 Pred.d <-cbind (DrugTargetSim,Drug.Gene.max.sim )
 DOI = 'ibrutinib'

@@ -14,20 +14,20 @@ PredMaxSim (Sim.GES.DRS,D.M)
     \item{D.M}{Drug Metadata}
 }
 \value{
-a table of drug information and the most correlated gene across all genes.
+a dataframe of drug(s) information with the most predicted gene(s) with the max corelation value(s), P value(s), and FDR value(s).
 }
 \author{sanjusinha7, Trinh Nguyen}
 \examples{
-library(parallel)
+library(BiocParallel)
 data (OntargetM)
 set.seed (12345)
 All.Drugs <- OntargetM$DrugMetadata[,"broad_id_trimmed"]
 S.Drugs <- sample(All.Drugs, 5)
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
-sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
-names(sim) <- S.Drugs
+sim.out <- bplapply(S.Drugs,function(x) computeCor(x,sec.prism,KO.GES))
+names(sim.out) <- S.Drugs
 Meta.data <- OntargetM$DrugMetadata
-Drug.Gene.max.sim <- PredMaxSim(sim,Meta.data)
+Drug.Gene.max.sim <- PredMaxSim(sim.out,Meta.data)
 }
 

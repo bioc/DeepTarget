@@ -1,7 +1,7 @@
 \name{plotSim}
 \alias{plotSim}
 \title{
-Plot the similarty between corelation values and P val;
+Plot the similarty between corelation values and P vals for all genes. The top 5 genes are labeled.
 }
 \description{
 Plot the similarty between corelation values and P val;
@@ -12,7 +12,7 @@ plotSim(dx,dy,clr=NULL, plot=TRUE)
 \arguments{
     \item{dx}{a matrix of p vals}
     \item{dy}{a matrix of correlation vals}
-    \item{clr}{Desired color}
+    \item{clr}{Desired range of color}
     \item{plot}{ default plot =TRUE}
 }
 \value{a plot of similarity}
@@ -20,18 +20,17 @@ plotSim(dx,dy,clr=NULL, plot=TRUE)
 Ying Hu,Trinh Nguyen
 }
 \examples{
-library(parallel)
+library(BiocParallel)
 data (OntargetM)
 set.seed (12345)
 All.Drugs <- OntargetM$DrugMetadata[,"broad_id_trimmed"]
-S.Drugs <- sample(All.Drugs, 5)
+Sample.Drugs <- sample(All.Drugs, 5)
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
-sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
-names(sim) <- S.Drugs
-cor=sapply(sim, function(x) x[,2])
-Pval=sapply(sim, function(x) x[,1])
+sim.out <- bplapply(Sample.Drugs,function(x) computeCor(x,sec.prism,KO.GES))
+names(sim.out) <- Sample.Drugs
+P.Values=sapply(sim.out, function(x) x[,1])
+estimate.cor.values=sapply(sim.out, function(x) x[,2])
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(3,3));
-color <- colorRampPalette(c("lightblue",'darkblue'));
-plotSim(Pval,cor,clr=color);
+plotSim(dx=P.Values,dy=estimate.cor.values);
 }

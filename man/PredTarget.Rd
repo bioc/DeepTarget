@@ -4,7 +4,7 @@
 Prediction  of the most similar known targeted gene.
 }
 \description{
-Predicts the gene that has the most similarity to a drug’s response scores across targeted genes
+Predicts the gene that has the most similarity to a drug’s response scores. This is done based on selecting a gene that has the most correlation across the known targeted genes by their drug.
 }
 \usage{
 PredTarget(Sim.GES.DRS,D.M)
@@ -14,22 +14,21 @@ PredTarget(Sim.GES.DRS,D.M)
     \item{D.M}{Drug Metadata}
 }
 \value{
-a table of drug information and their most targeted gene with stats of correlation.
+a dataframe of drug(s) information with the most known predicted gene(s) with the max corelation value(s), P value(s), and FDR value(s).
 }
 \author{
 sanjusinha7, Trinh Nguyen
 }
 \examples{
-library(parallel)
-library(DeepTarget)
-data (OntargetM)
+library(BiocParallel)
+data(OntargetM)
 set.seed (12345)
 All.Drugs <- OntargetM$DrugMetadata[,"broad_id_trimmed"]
 S.Drugs <- sample(All.Drugs, 5)
 KO.GES <- OntargetM$avana_CRISPR
 sec.prism <- OntargetM$secondary_prism
-sim <- mclapply(S.Drugs,function(x) GetSim(x,sec.prism,KO.GES),mc.cores = 2)
-names(sim) <- S.Drugs
+sim.out <- bplapply(S.Drugs,function(x) computeCor(x,sec.prism,KO.GES))
+names(sim.out) <- S.Drugs
 Meta.data <- OntargetM$DrugMetadata
-DrugTargetSim <- PredTarget(sim,Meta.data)
+DrugTargetSim <- PredTarget(sim.out,Meta.data)
 }
