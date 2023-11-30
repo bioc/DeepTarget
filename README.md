@@ -1,34 +1,43 @@
-## ## Citation
-if you use `DeepTarget`, please consider adding the following
-citation from bioRxiv preprint: [direct link
-here](https://www.biorxiv.org/content/10.1101/2022.10.17.512424v1)
+
+# DeepTarget
+`DeepTarget` performs deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens from the Cancer Dependency Map project run by the Broad Institute (depmap.org)  and aims to find drug's primary target(s), predict whether the drug specifically targets the wild-type or mutated target forms, and predict the secondary target(s) that mediate its response when the primary target is not expressed.
 
 ## Installation
-### Github installation
-library(devtools)
-install_github("CBIIT-CGBB/DeepTarget")
+### GitHub installation
+You can install the development version of DeepTarget from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("CBIIT-CGBB/DeepTarget")
+```
 
 ### Bioconductor installation
-
 In order to install the package from Bioconductor, make sure
 `BiocManager` is installed and then install the package
 `DeepTarget`:
+``` r
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("DeepTarget")
+```
+## Example
 
-    if (!require("BiocManager", quietly = TRUE))
-        install.packages("BiocManager")
+Please refer to the file named DeepTarget_Vignette.Rmd in the directory vignettes for a demonstration of how the package can be used.
 
-    BiocManager::install("DeepTarget")
-## Usage
+## Data
+For the purpose of demonstration, we include an OntargetM object that contains a subset of data from the Cancer Dependency Map (depmap.org). The full data set it too large for package memory constraints. For details and links to download the full data set, please use the  `??OntargetM` command.
 
-### Vignettes
-
-`DeepTarget` performs deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens from public datasets and aims to find drug's primary target(s), predict whether the drug specifically targets the wild-type or mutated target forms, and predict the secondary target(s) that mediate its response when the primary target is not expressed.
-
-### Data
- For the purpose of demonstration, we provided a OntargetM object that contains a small subset of data. For full datasets used in the manuscript, please contact us at tinh.nguyen@nih.gov. For the detail of the links for downloading the data, please do ??DeepTarget.
-
-### Brief examples for interesting drugs from the paper.
-
-Please refer to the file named V_analyses.Rmd in the directory vignettes
-
-
+## Citation
+If you use `DeepTarget`, please consider adding the following
+citation from bioRxiv preprint: (https://www.biorxiv.org/content/10.1101/2022.10.17.512424v1)
+@article {Sinha2022.10.17.512424,
+	author = {Sanju Sinha and Neelam Sinha and Eytan Ruppin},
+	title = {Deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens},
+	elocation-id = {2022.10.17.512424},
+	year = {2022},
+	doi = {10.1101/2022.10.17.512424},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2022/10/19/2022.10.17.512424},
+	eprint = {https://www.biorxiv.org/content/early/2022/10/19/2022.10.17.512424.full.pdf},
+	journal = {bioRxiv}
+}
