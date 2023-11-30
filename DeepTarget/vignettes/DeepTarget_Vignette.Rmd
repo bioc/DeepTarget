@@ -1,0 +1,402 @@
+---
+title: "Workflow Demonstration for Deep characterization of cancer drugs"
+output: 
+  BiocStyle::html_document
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteIndexEntry{Workflow Demonstration for Deep characterization of cancer drugs}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    warning = FALSE,
+    message = FALSE,
+    cache = TRUE
+)
+```
+
+# Introduction
+
+This vignette will guide users how to integrate large-scale genetic and
+drug screens to do association analysis and use this information to both
+predict the drug's primary target(s) or secondary target and investigate
+whether the primary target specifically targets the wild-type or mutated
+target forms. This will be done by three parts: Core Analysis, and
+application, and conclusion. The result from core analysis will be used for the
+application part. We also give an example for interpreting the result in
+the conclusion part.
+
+# Part I: Core Analysis
+
+The core analysis includes loading the necessary data, performing the
+core analysis, and saving the results. Specifically, for a given drug,
+the core analysis includes generating a similarity score between the
+viability after drug treatment and each gene knockout,and computing if
+the drug may differential bind to the known drug target mutant form or
+WT form, by calculating this similarity in cell lines with known target
+WT vs. mutant form, and finally, finding the secondary targets of the
+drug by repeating this analysis in the cell lines where the primary
+target is not expressed.
+
+Below is the step-by-step scripts for this Core analysis part:
+
+## Data Loading and Preparation
+
+The script loads OntargetM object and prepare the drug response scores
+(secondary_prism ) matrix for the interesting drugs and Gene effect
+scores after CRISPR-KO matrix. We will use these two matrices to obtain
+the correlation information.
+
+secondary_prism: row names is the drug ID and column names are cell
+lines. The values are the response scores. avana_CRISPR: row names are
+the gene's names and column are cell lines. The values are the effect
+scores of KO method.
+
+```{r Data Loading and Preparation}
+library(DeepTarget)
+data("OntargetM")
+## "Below is the OnTargetM object containing a subset of public data downloading from depmap.org"
+sapply(OntargetM,dim)
+## drug of interest.
+drug.name <- c('atiprimod','AMG-232','pitavastatin','Ro-4987655','alexidine','RGFP966','dabrafenib','olaparib','CGM097','ibrutinib','palbociclib')
+## data preparation for these drugs
+## the secondary prism contain the response scores, where columns are cell lines and row names for Broad IDs of the drug.
+## First, Obtain the broad ID for these interesting drug.
+Broad.IDs <- OntargetM$DrugMetadata$broad_id_trimmed [which(OntargetM$DrugMetadata$name %in% drug.name)]
+## the drug response has duplicated assays so we have 16 rows returned for 11 drugs.
+sec.prism.f <- OntargetM$secondary_prism[which ( row.names(OntargetM$secondary_prism) %in% Broad.IDs), ]
+KO.GES <- OntargetM$avana_CRISPR
+
+```
+
+## Computing Similarity Between Drug Treatment and Gene Knockout
+
+The script computes the similarity Between Drug Treatment and Gene
+Knockout using computeCor function. We assign the correlation values as
+similarity scores.
+
+Input: Drug Response Scores (DRS) and Knock-out Gene Expression Scores
+from CRIPSR method ( KO.GES). Output: a list of ID drugs where each drug
+contains a matrix of their correlation, p val, and FDR values.
+
+```{r Computing a correlation between the every gene crispr KO vs each drug response for all interesting drugs}
+List.sim <- NULL;
+for (i in 1:nrow(sec.prism.f)){
+    DRS <- as.data.frame(sec.prism.f[i,])
+    DRS <- t(DRS)
+    row.names(DRS) <- row.names(sec.prism.f)[i]
+    out <- computeCor(row.names(sec.prism.f)[i],DRS,KO.GES)
+    List.sim [[length(List.sim) + 1]] <- out
+}
+names(List.sim) <- row.names(sec.prism.f)
+
+```
+
+## Performing Pathway Analysis Based on Drug Meta Data and the similarity output from above
+
+Input: Drug metadata and the similarity scores obtained above.
+
+The drug metadata provides the information for the drug including drug
+name, its targeted proteins (target column) and targeted pathways (moa
+column). For example, BMX and BTK are the targeted proteins for Bruton
+tyrosine kinase (BTK) inhibitor pathway.
+
+Here, DoPWY() performs the pre-ranked gene set enrichment analysis using
+fgsea, where the similarity scores from all genes were ranked and the
+tested pathways and their targeted proteins were obtained from drug metadata
+explained above.
+
+Output: The list of pathways enriched among the top-ranked genes to
+provide a pathway-level description of each drug's predicted primary and
+secondary MOA.
+
+```{r Performing Pathway Analysis Based on Drug Meta Data}
+metadata <- OntargetM$DrugMetadata
+Pwy.Enr <- DoPWY(List.sim,metadata)
+
+```
+
+## Predicting Similarity Across Known Targeted Genes and All Genes
+
+The script predicts similarity Across Known Targeted Genes and All Genes
+using PredTarget and PredMaxSim functions. 
+Input: List.sim: the list of similarity scores obtained above.
+meta data: drug information.
+Output:
+PredTarget(): a data frame contain the drug name and the max similarity
+scores among their targeted proteins. For example, if there are two
+proteins targeted for the same drug, the one has higher correlation will
+be likely the most targeted for that drug. 
+PredMaxSim (): a data frame
+contain the drug name and the protein with the max similarity scores
+across all genes. For example, within a drug, the protein A with the
+highest similarity score will be assigned as best target for that drug.
+
+```{r section.cap="Predicting Similarity Across Known Targeted Genes and All Genes"}
+DrugTarcomputeCor <- PredTarget(List.sim,metadata)
+DrugGeneMaxSim <- PredMaxSim(List.sim,metadata)
+
+```
+
+## Computing the Interaction
+
+The script computes the interaction between the drug and knockout (KO)
+gene expression in terms of both mutant vs non-mutant and lower vs
+higher expression using DoInteractExp function and DoInteractMutant
+function. 
+Input: Mutation matrix, expression matrix, drug response scores. 
+    Mutation matrix: row names are gene names and column names are
+    cell lines. The values are mutant or non mutant (0 and 1) 
+    Expression matrix: row names are gene names and column names are cell lines.
+    The values are gene expression. 
+    Drug response scores: The output from PredTarget(). We only focus on 
+    learning more about the interaction of these drugs with their best targets. 
+output:
+DoInteractMutant(): a data frame contains the
+drug name and their strength from linear model function from drug
+response and gene expression scores in term of mutant/non-mutant group.
+
+DoInteractExp(): a data frame contains the drug name and their strength
+from linear model function from drug response and gene expression scores
+in term of expression group based on cut-off values from expression values.
+```{r section.cap="Computing the Interaction"}
+d.mt <- OntargetM$mutations_mat
+d.expr <- OntargetM$expression_20Q4
+out.MutantTarget <- NULL;
+out.LowexpTarget <- NULL;
+for (i in 1:nrow(sec.prism.f)){
+    DRS=as.data.frame(sec.prism.f[i,])
+    DRS <- t(DRS)
+    row.names(DRS) <- row.names(sec.prism.f)[i]
+    ## for mutant
+    Out.M <- DoInteractMutant(DrugTarcomputeCor[i,],d.mt,DRS,KO.GES)
+    TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength=sapply(Out.M, function(x) x[1]), 
+                                  MaxTgt_Inter_Mut_Pval=sapply(Out.M, function(x) x[2]))
+    out.MutantTarget <- rbind(out.MutantTarget,TargetMutSpecificity)
+    ## for expression.
+    Out.Expr <- DoInteractExp(DrugTarcomputeCor[i,],d.expr,DRS,KO.GES,CutOff= 2)
+    TargetExpSpecificity <- data.frame(
+    MaxTgt_Inter_Exp_strength <- 
+    sapply(Out.Expr, function(x) x[1]),
+    MaxTgt_Inter_Exp_Pval <- sapply(Out.Expr, function(x) x[2]))
+    out.LowexpTarget <- rbind (out.LowexpTarget,TargetExpSpecificity)
+}
+
+```
+
+## Interaction Assessment
+
+This part of the script assesses whether the interaction result is true
+or false based on a certain cut-off, and the p-value from the above
+part.
+
+```{r Interaction Assessment}
+Whether_interaction_Ex_based= ifelse( out.LowexpTarget$MaxTgt_Inter_Exp_strength <0
+& out.LowexpTarget$MaxTgt_Inter_Exp_Pval <0.2,TRUE,FALSE)
+predicted_resistance_mut= ifelse(
+out.MutantTarget$MaxTgt_Inter_Mut_Pval<0.1,TRUE,FALSE)
+
+```
+
+## Preparation for Output
+
+Lastly, the script gathers the results into a final data frame and
+writes it to a CSV file to be used for the application part.
+
+```{r Preparation for Output}
+Pred.d <- NULL;
+Pred.d <- cbind(DrugTarcomputeCor,DrugGeneMaxSim,out.MutantTarget,predicted_resistance_mut)
+mutant.C <- sapply(Pred.d[,3],function(x)tryCatch(sum(d.mt[x,] ==1),error=function(e){NA}))
+Pred.d$mutant.C <- mutant.C
+Low.Exp.C = sapply(Pred.d[,3],
+function(x)tryCatch(sum(d.expr[x,] < 2),error=function(e){NA})) 
+Pred.d <- cbind(Pred.d, out.LowexpTarget, Whether_interaction_Ex_based,Low.Exp.C)
+
+```
+
+## In addition to the output of prediction object, we also identify drugs with low primary target expressing cell lines
+
+For the drugs where the primary target is not expressed in at least five
+cell lines, we will identify their secondary target below. This section
+identifies primary target genes that are not expressed in at least 5
+cell lines.
+
+```{r Identifying Drugs with low primary target expressing cell lines}
+Low.i <- which(Pred.d$Low.Exp.C >5)
+Pred.d.f <- Pred.d[ Low.i,]
+Low.Exp.G = sapply(Pred.d.f[,3],
+function(x) tryCatch(names(which(d.expr[x,]<2)),error=function(e){NA}))
+identical (names(Low.Exp.G),Pred.d.f[,3] )
+sim.LowExp <- NULL;
+sec.prism.f.f <- sec.prism.f[Low.i,]
+identical (row.names(sec.prism.f.f) ,Pred.d.f[,1])
+
+```
+
+## Calculating Drug KO Similarities in cell lines with low primary target
+
+The following script performs calculations to determine DKS score in
+cell lines with low primary target expression. This DKS score is called
+Secondary DKS Score and denotes the secondary target probability.
+
+```{r Calculating Drug KO Similarities in cell lines with low primary target}
+for (i in 1:nrow(Pred.d.f)){
+    DRS.L= sec.prism.f.f[i,Low.Exp.G[[unlist(Pred.d.f[i,3])]]]
+    DRS.L <- t(as.data.frame(DRS.L))
+    row.names(DRS.L) <- Pred.d.f[i,1]
+    out <- computeCor(Pred.d.f[i,1],DRS.L,KO.GES)
+    sim.LowExp [[length(sim.LowExp) + 1]] <- out
+}
+names(sim.LowExp) <- Pred.d.f[,1]
+
+```
+
+# Part II: Application
+
+For this section, we will use the information obtained above. 
+First, we find a drug's primary target(s) and visualize them.
+Next, we predict whether the drug specifically targets the wild-type or
+mutated target forms. We then predict the secondary target(s) that
+mediate its response when the primary target is not expressed. For more
+detail, please refer to the paper from this link:
+<https://www.biorxiv.org/content/10.1101/2022.10.17.512424v1>
+
+## Finding and visualizing a drug primary target
+
+The script below generates the correlation plots for primary targets BRAF
+and MDM2 for the drugs Dabrafenib and AMG-232 respectively.
+
+```{r Finding a primary target}
+## This drug is unique in this Prediction data object.
+DOI = 'AMG-232'
+GOI = 'MDM2'
+plotCor(DOI,GOI,Pred.d,sec.prism.f,KO.GES,plot=TRUE)
+## Interpretation: The graph shows that there is a positive significant 
+## correlation of MDM2 with drug AMG-232 (Correlation value: 0.54 
+## and P val < 0.01)
+DOI = 'dabrafenib'
+GOI = 'BRAF'
+## this drug has duplicated assay; which is row 4 and 5 in both Pred.d object and drug treatment.
+## Here, let's look at the row 5 obtain the drug response for 'dabrafenib'
+DRS <- as.data.frame(sec.prism.f[5,])
+DRS <- t(DRS)
+## set the rownames with the Broad ID of the DOI
+row.names(DRS) <- row.names(sec.prism.f)[5]
+identical ( Pred.d$DrugID, row.names(sec.prism.f))
+## because the Pred.d and sec.prism.f have the same orders so we
+plotCor(DOI,GOI,Pred.d[5,],DRS,KO.GES,plot=TRUE)
+## Interpretation: The graph shows that there is a positive significant 
+## correlation of BRAF with drug dabrafenib. (Correlation value(R): 0.58 and P val < 0.01)
+```
+
+## Predicting whether the drug specifically targets the wild-type or mutated target forms
+
+The script below shows whether the drugs, CGM097 and Dabrafenib, target
+the wild-type or mutated target forms of MDM2 and BRAF respectively from
+the Prediction object and then generates plots for visualization.
+
+```{r Predicting whether the drug specifically targets the wild-type or mutated target forms}
+## preparing the data for mutation from Pred.d dataframe.
+Pred.d.f <- Pred.d[,c(1:3,12:15)]
+## only look at the mutated target forms.
+Pred.d.f.f <- Pred.d.f[which (Pred.d.f$predicted_resistance_mut==TRUE), ]
+## Let's start with CGM097, unique assay
+DOI=Pred.d.f.f$drugName[3]
+GOI=Pred.d.f.f$MaxTargetName[3]
+DrugID <- Pred.d.f.f$DrugID[3]
+DRS=as.data.frame(sec.prism.f[DrugID,])
+DRS <- t(DRS)
+row.names(DRS) <- DrugID
+head(DRS)
+out <- DMB(DOI,GOI,Pred.d.f.f[3,],d.mt,DRS,KO.GES,plot=TRUE)
+print (out)
+## Interpretation: The graph shows CGM097 is likely targeting both the mutant 
+## form (R=0.81, P val <0.01) and the wild type form (R=0.49, P >0.01) of 
+## the MDM2 gene.
+## For dabrafenib, both assays suggest that BRAF is mutated target forms, we will choose one for visualization.
+DOI ="dabrafenib"
+GOI = "BRAF"
+# because this has two assays in the drug response score matrix, we will visualize one of them.
+# first check identity.
+identical ( Pred.d.f$DrugID, row.names(sec.prism.f))
+## we will choose the row 5.
+DRS=as.data.frame(sec.prism.f[5,])
+DRS <- t(DRS)
+row.names(DRS) <- row.names(sec.prism.f)[5]
+out <- DMB(DOI,GOI,Pred.d.f[5,],d.mt,DRS,KO.GES,plot=TRUE)
+print (out)
+## Interpretation: The graph shows dabrafenib is likely targeting the mutant 
+## form (R=0.66, P val <0.01) rather than the wild type form (R=-0.1, P >0.01) 
+## of BRAF gene.
+
+```
+
+## Predicting secondary target(s) that mediate its response when the primary target is not expressed
+
+As an example, let's look at the drug 'ibrutinib' from the Prediction
+object. Ibrutinib is a well-known covalent target of BTK. Please note
+that for this drug, there are two assays. We selected only one of them for
+this example.
+
+```{r Predicting secondary target}
+## This drug has two assays.
+# The index is 14 in the order of the interesting drugs.
+identical (Pred.d$DrugID, row.names(sec.prism.f))
+DRS=as.data.frame(sec.prism.f[14,])
+DRS <- t(DRS)
+row.names(DRS) <- row.names(sec.prism.f)[14]
+####
+DOI="ibrutinib"
+GOI="BTK"
+out <- DTR (DOI,GOI,Pred.d[14,],d.expr,DRS,KO.GES,CutOff= 2)
+print(out)
+
+```
+
+We find above that Ibrutinib's response is only correlated with the BTK
+gene in cell lines where BTK is expressed and not in cell lines where
+BTK is not expressed. Next, let's look at the correlation between the
+BTK gene KO and this drug response in no BTK cell lines to predict the
+secondary targets for this drug.
+
+```{r Predicting secondary target(s) that mediate its response when the primary target is not expressed}
+
+sim.LowExp.Strength=sapply(sim.LowExp, function(x) x[,2])
+dim(sim.LowExp.Strength)
+sim.LowExp.Pval=sapply(sim.LowExp, function(x) x[,1])
+head(sim.LowExp.Pval)
+## Let's take a look at ibrutinib
+par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(1,2));
+plotSim(sim.LowExp.Pval[,8],sim.LowExp.Strength[,8],colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
+
+```
+
+# Part III: Conclusion
+
+We observe below that Ibrutinib response is strongly correlated with
+EGFR knockout (KO) in cell lines where Bruton tyrosine kinase (BTK) is
+not expressed. However, this correlation is not observed in cell lines
+where BTK is expressed. Among the top predicted genes, there are more
+layers of evidence that Ibrutinib binds physically to EGFR. Thus, let's
+focus further on EGFR.
+
+```{r Conclusion}
+DOI="ibrutinib"
+GOI="EGFR"
+out <- DTR (DOI,GOI,Pred.d[14,],d.expr,DRS,KO.GES,CutOff= 2)
+print (out)
+
+```
+
+# Session info
+
+```{r session}
+sessionInfo()
+```
