@@ -9,6 +9,7 @@ export ('DMB')
 export('DTR')
 export('plotSim')
 export('plotCor')
+export ('Depmap2DeepTarget')
 
 importFrom(fgsea, fgsea)
 importFrom(ggplot2, ggplot)
@@ -32,12 +33,19 @@ importFrom(stats, na.omit)
 importFrom(stats, p.adjust)
 importFrom(stats, pnorm)
 importFrom(stats, pt)
+importFrom(stats, xtabs)
 importFrom(stats, cor.test)
 importFrom(graphics, segments)
 importFrom(graphics, text)
 importFrom(graphics, rect)
 importFrom(graphics, par)
 importFrom(grDevices, colorRampPalette)
+importFrom(ExperimentHub,ExperimentHub)
+importFrom(AnnotationHub,query)
+importFrom(depmap, depmap_TPM)
+importFrom(depmap, depmap_crispr)
+importFrom(depmap,depmap_mutationCalls)
+
 
 
 
