@@ -10,7 +10,7 @@ Retrieve gene expression, Cripr, mutation data from KO method, and drug matrix a
 Depmap2DeepTarget(FileN,version)
 }
 \arguments{
-    \item{FileN}{File Named used as input for DeepTarget: "CCLE_expression.csv", "CRISPRGeneEffect.csv","OmicsSomaticMutations.csv", or "secondary-screen-dose-response-curve-parameters.csv"}
+    \item{FileN}{File Named used as input for DeepTarget: "CCLE_expression.csv", "CRISPRGeneEffect.csv"    ,"OmicsSomaticMutations.csv", or "secondary-screen-dose-response-curve-parameters.csv"}
     \item{version}{Version of data}
 }
 \value{
@@ -25,15 +25,5 @@ require(tidyverse)
 require(depmap)
 # expresion
 CCLE.exp <- Depmap2DeepTarget("CCLE_expression.csv","19Q4")
-# scripr
-crispr.effect <- Depmap2DeepTarget("CRISPRGeneEffect.csv","22Q4")
-# mutation
-Omics.Mut <- Depmap2DeepTarget("OmicsSomaticMutations.csv","22Q4")
-# drug
-drug.sec <- Depmap2DeepTarget("secondary-screen-dose-response-curve-parameters.csv","19Q4")
-# DrugMetadata 
-drug.MetaData <- drug.sec[,c(1:6)]
-# drug secondary score
-drug.sec.scores <- drug.sec[,-c(1:6)]
 }
 
