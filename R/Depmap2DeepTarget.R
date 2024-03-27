@@ -1,5 +1,5 @@
 ## This version is pull the data from publicly available files that were shared by the depmap consortium on figshare. 
-Depmap2DeepTarget <- function(FileN="CCLE_expression.csv",version="19Q4"){
+Depmap2DeepTarget <- function(FileN,version){
     out <- dmsets() |> filter(grepl(version, title))
     for ( i in seq_len(nrow(out))){
         d.id <- out$dataset_id[i]
