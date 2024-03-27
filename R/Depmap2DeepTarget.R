@@ -1,42 +1,63 @@
-# Function to obtain the datatype for Deeptarget.
-Depmap2DeepTarget <- function(DataType="TPM", version="20Q4"){
-    eh <- ExperimentHub()
-    out <- query(eh, "depmap")
-    ## check to see whether user enter correctly.
-    Found.i <-  which ( out$title==paste0(DataType,"_",version))
-    if (length(Found.i)==0){
-        print ( "Only these datatypes and versions are available")
-        print ( out$title[grep ( "mutationCalls",out$title)])
-        print ( out$title[grep ( "TPM",out$title)])
-        print ( out$title[grep ( "crispr",out$title)])
+## This version is pull the data from publicly available files that were shared by the depmap consortium on figshare. 
+Depmap2DeepTarget <- function(FileN="CCLE_expression.csv",version="19Q4"){
+    out <- dmsets() |> filter(grepl(version, title))
+    for ( i in seq_len(nrow(out))){
+        d.id <- out$dataset_id[i]
+        Found.i <-  dmfiles() |>filter(dataset_id == d.id) |> filter(name == FileN)
+        if (nrow(Found.i)>0){break}
+    }
+    if (nrow(Found.i)==0){
+        stop("This file is not available for this version")
     }else{
-        out.f <- out[[Found.i]]
-        if (DataType=="TPM" ){
-            out.d <- data.frame(ColumnName=out.f$depmap_id,RowName=out.f$gene_name,Value=out.f$rna_expression)
-            out.m <- xtabs(Value ~ RowName + ColumnName, data = out.d)
+        ## download and read the file.
+        out.f <- dmfiles() |>filter(dataset_id == d.id) |> filter(name == FileN) |>
+            dmget() |>
+            read_csv()
+        if (FileN=="CCLE_expression.csv" || FileN=="CRISPRGeneEffect.csv"){
+            out.t <- t(out.f)
+            colnames(out.t) <-  out.t[1,]
+            out.t <- out.t[-1,]
+            out.d <- as.data.frame(out.t)
+            out.d$Gene <- row.names(out.d)
+            # pre-processed
+            Gene_name = sapply(strsplit(out.d$Gene, '[ ()]'), "[", 1)
+            out.m <- cbind (Gene_name,out.d)
         }
-        if (DataType=="crispr") { 
-            out.d <- data.frame(ColumnName=out.f$depmap_id,RowName=out.f$gene_name,Value=out.f$dependency)
-            out.m <- xtabs(Value ~ RowName + ColumnName, data = out.d)}
-        if (DataType=="mutationCalls"){
-            mu_frame <- data.frame(ColumnName=out.f$depmap_id,
-                                   RowName=out.f$gene_name)
+        if (FileN=="OmicsSomaticMutations.csv"){
+            mu_frame <- data.frame(ColumnName=out.f$DepMap_ID,
+            RowName=out.f$HugoSymbol)
             ## remove silent one.
-            filter_var_class <- "Silent"
-            f.i <- which(out.f$var_class %in% filter_var_class)
+            filter_var_class <- "SILENT"
+            f.i <- which(out.f$VariantInfo %in% filter_var_class)
             mu_frame <- mu_frame[-f.i,]
             # Unique column and row names
             unique_cols <- unique(mu_frame$ColumnName)
             unique_rows <- unique(mu_frame$RowName)
             # Create an empty matrix
             out.m <- matrix(0, nrow = length(unique_rows), ncol = length(unique_cols),
-                            dimnames = list(unique_rows, unique_cols))
+                dimnames = list(unique_rows, unique_cols))
             # Fill the matrix
-            for(i in 1:nrow( out.m)) {
-                out.m[mu_frame$RowName[i], mu_frame$ColumnName[i]] <- 1
+            for(j in seq_len(nrow(out.m))){
+                out.m[mu_frame$RowName[j], mu_frame$ColumnName[j]] <- 1
             }
-        }
-        out.m
+            out.m <- as.data.frame(out.m)}
+        if (FileN=="secondary-screen-dose-response-curve-parameters.csv"){
+            # Area under the curve(AUC) is used; also, retrieve meta data for later use.
+            out.f$Broad_id_trimmed = sapply(strsplit(out.f$broad_id, "[-]"), "[", 2)
+            out.d.Auc <- data.frame(ColumnName=out.f$depmap_id,RowName=out.f$Broad_id_trimmed,Value=out.f$auc)
+            out.d.Auc.m <- xtabs(Value ~ RowName + ColumnName, data = out.d.Auc)
+            attr(out.d.Auc.m, "class") <- NULL
+            attr(out.d.Auc.m, "call") <- NULL
+            # annotation
+            out.f.anno <- out.f[,c("broad_id","Broad_id_trimmed","name","target", "moa","smiles")]
+            out.d.anno <- as.data.frame(out.f.anno)
+            out.d.anno <- out.d.anno[!duplicated(out.d.anno$Broad_id_trimmed),]
+            row.names(out.d.anno) <- out.d.anno$Broad_id_trimmed
+            out.d.anno <- out.d.anno[row.names(out.d.Auc.m),]
+            out.m <- cbind ( out.d.anno,out.d.Auc.m)}
+            # return the dataframe if found
+        return(out.m)
     }
 }
+
 

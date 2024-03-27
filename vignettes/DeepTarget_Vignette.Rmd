@@ -48,11 +48,10 @@ target is not expressed.
 Below is the step-by-step scripts for this Core analysis part:
 
 ## Data Loading and Preparation
-
-The script loads OntargetM object and prepare the drug response scores
+Users can use the Depmap2DeepTarget function and following examples to download the data needed. Here, the script loads OntargetM object and prepare the drug response scores
 (secondary_prism ) matrix for the interesting drugs and Gene effect
 scores after CRISPR-KO matrix. We will use these two matrices to obtain
-the correlation information.
+the correlation information. Please note that OntargetM object only contains a small subset of data for demonstration.
 
 secondary_prism: row names is the drug ID and column names are cell
 lines. The values are the response scores. avana_CRISPR: row names are
@@ -60,6 +59,7 @@ the gene's names and column are cell lines. The values are the effect
 scores of KO method.
 
 ```{r Data Loading and Preparation}
+
 library(DeepTarget)
 data("OntargetM")
 ## "Below is the OnTargetM object containing a subset of public data downloading from depmap.org"
@@ -69,7 +69,7 @@ drug.name <- c('atiprimod','AMG-232','pitavastatin','Ro-4987655','alexidine','RG
 ## data preparation for these drugs
 ## the secondary prism contain the response scores, where columns are cell lines and row names for Broad IDs of the drug.
 ## First, Obtain the broad ID for these interesting drug.
-Broad.IDs <- OntargetM$DrugMetadata$broad_id_trimmed [which(OntargetM$DrugMetadata$name %in% drug.name)]
+Broad.IDs <- OntargetM$DrugMetadata$broad_id_trimmed[which(OntargetM$DrugMetadata$name %in% drug.name)]
 ## the drug response has duplicated assays so we have 16 rows returned for 11 drugs.
 sec.prism.f <- OntargetM$secondary_prism[which ( row.names(OntargetM$secondary_prism) %in% Broad.IDs), ]
 KO.GES <- OntargetM$avana_CRISPR
