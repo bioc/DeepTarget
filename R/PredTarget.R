@@ -33,7 +33,7 @@ PredTarget <- function(Sim.GES.DRS,D.M){
             function(x) names(which.max(x)),character(1))
         Drug.id <- D.M.f[match(names(Target.Max.cor), D.M.f$name),1]
     }
-    Target.Max.Name[sapply(Target.Max.Name, length)==0] <- NA
+    Target.Max.Name[vapply(Target.Max.Name, length,FUN.VALUE =numeric(1))==0] <- NA
     ## Obtain drug ID and make sure that we map the correct one
     Target.Pred <- data.frame(
         DrugID = Drug.id,

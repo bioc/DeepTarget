@@ -20,7 +20,7 @@ Depmap2DeepTarget <- function(FileN,version){
             out.d <- as.data.frame(out.t)
             out.d$Gene <- row.names(out.d)
             # pre-processed
-            Gene_name = sapply(strsplit(out.d$Gene, '[ ()]'), "[", 1)
+            Gene_name <- vapply(strsplit(out.d$Gene, '[ ()]'), "[", 1,FUN.VALUE = as.character(length(out.d$Gene)) )
             out.m <- cbind (Gene_name,out.d)
         }
         if (FileN=="OmicsSomaticMutations.csv"){
@@ -43,7 +43,7 @@ Depmap2DeepTarget <- function(FileN,version){
             out.m <- as.data.frame(out.m)}
         if (FileN=="secondary-screen-dose-response-curve-parameters.csv"){
             # Area under the curve(AUC) is used; also, retrieve meta data for later use.
-            out.f$Broad_id_trimmed = sapply(strsplit(out.f$broad_id, "[-]"), "[", 2)
+            out.f$Broad_id_trimmed <- vapply(strsplit(out.f$broad_id, "[-]"), "[", 2, FUN.VALUE = as.character(length(out.f$broad_id)))
             out.d.Auc <- data.frame(ColumnName=out.f$depmap_id,RowName=out.f$Broad_id_trimmed,Value=out.f$auc)
             out.d.Auc.m <- xtabs(Value ~ RowName + ColumnName, data = out.d.Auc)
             attr(out.d.Auc.m, "class") <- NULL

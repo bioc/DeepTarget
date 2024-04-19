@@ -21,7 +21,7 @@ Trinh Nguyen, Ying Hu, and sanju
 }
 
 \examples{
-require(tidyverse)
+require(readr)
 require(depmap)
 # expresion
 CCLE.exp <- Depmap2DeepTarget("CCLE_expression.csv","19Q4")
