@@ -21,8 +21,8 @@ Trinh Nguyen, Ying Hu, and sanju
 }
 
 \examples{
-require(readr)
-require(depmap)
+library(readr)
+library(depmap)
 # expresion
 CCLE.exp <- Depmap2DeepTarget("CCLE_expression.csv","19Q4")
 }

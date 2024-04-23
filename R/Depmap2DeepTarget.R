@@ -1,16 +1,17 @@
 ## This version is pull the data from publicly available files that were shared by the depmap consortium on figshare. 
 Depmap2DeepTarget <- function(FileN,version){
-    out <- dmsets() |> filter(grepl(version, title))
+    out <- depmap::dmsets() |> dplyr::filter(grepl(version, title))
+    if (nrow(out)==0){stop("please check FileName and its version")}
     for ( i in seq_len(nrow(out))){
         d.id <- out$dataset_id[i]
-        Found.i <-  dmfiles() |>filter(dataset_id == d.id) |> filter(name == FileN)
+        Found.i <-  depmap::dmfiles() |>filter(dataset_id == d.id) |> filter(name == FileN)
         if (nrow(Found.i)>0){break}
     }
     if (nrow(Found.i)==0){
         stop("This file is not available for this version")
     }else{
         ## download and read the file.
-        out.f <- dmfiles() |>filter(dataset_id == d.id) |> filter(name == FileN) |>
+        out.f <- depmap::dmfiles() |>filter(dataset_id == d.id) |> filter(name == FileN) |>
             dmget() |>
             read_csv()
         if (FileN=="CCLE_expression.csv" || FileN=="CRISPRGeneEffect.csv"){

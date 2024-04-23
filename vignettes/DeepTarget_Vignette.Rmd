@@ -48,7 +48,7 @@ target is not expressed.
 Below is the step-by-step scripts for this Core analysis part:
 
 ## Data Loading and Preparation
-Users can use the Depmap2DeepTarget function and following examples Depmap2DeepTarget.Rmd to obtain the data needed. Here, the script loads OntargetM object and prepare the matrices for the drug response scores (secondary_prism ) and CRISPR Gene Effect scores. We will use these two matrices to obtain the correlation information. Please note that OntargetM object only contains a small subset of data for demonstration.
+Users can use the Depmap2DeepTarget function and following examples Depmap2DeepTarget.Rmd to obtain the data needed. Please refer to OntargetM.Rd to obtain the same versions used in this example. Here, the script loads OntargetM object and prepare the matrices for the drug response scores (secondary_prism ) and CRISPR Gene Effect scores. We will use these two matrices to obtain the correlation information. Please note that OntargetM object only contains a small subset of data across common cell lines for demonstration purpose. 
 
 secondary_prism: row names is the drug ID and column names are cell
 lines. The values are the response scores. 
@@ -173,7 +173,7 @@ for (i in 1:nrow(sec.prism.f)){
     row.names(DRS) <- row.names(sec.prism.f)[i]
     ## for mutant
     Out.M <- DoInteractMutant(DrugTarcomputeCor[i,],d.mt,DRS,KO.GES)
-    TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength=vapply(Out.M, function(x) x[1],numeric(1)), MaxTgt_Inter_Mut_Pval=vapply(Out.M, function(x) x[2],numeric(1)))
+    TargetMutSpecificity <- data.frame(MaxTgt_Inter_Mut_strength=vapply(Out.M, function(x)  x[1],numeric(1)), MaxTgt_Inter_Mut_Pval=vapply(Out.M, function(x) x[2],numeric(1)))
     out.MutantTarget <- rbind(out.MutantTarget,TargetMutSpecificity)
     ## for expression.
     Out.Expr <- DoInteractExp(DrugTarcomputeCor[i,],d.expr,DRS,KO.GES,CutOff= 2)

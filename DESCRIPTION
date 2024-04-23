@@ -13,5 +13,5 @@ biocViews: GeneTarget, GenePrediction,Pathways, GeneExpression, RNASeq, ImmunoOn
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
-Imports: fgsea, ggplot2, stringr, ggpubr, BiocParallel, pROC, stats, grDevices, graphics, depmap, readr, dplyr,BiocGenerics, BiocParallel, Biobase
+Imports: fgsea, ggplot2, stringr, ggpubr, BiocParallel, pROC, stats, grDevices, graphics, depmap, readr, dplyr
 Depends: R (>= 4.2.0)
