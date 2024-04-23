@@ -1,7 +1,7 @@
 Package: DeepTarget
 Type: Package
 Title: Deep characterization of cancer drugs 
-Version: 0.99.18
+Version: 0.99.19
 Authors@R: c(
     person("Sanju", "Sinha", email = "sanju@terpmail.umd.edu", role ="aut"),
     person("Trinh", "Nguyen", email = "tinh.nguyen@nih.gov", role = c("aut","cre"),comment=c(ORCID="0000-0002-6606-6948")),
@@ -13,5 +13,5 @@ biocViews: GeneTarget, GenePrediction,Pathways, GeneExpression, RNASeq, ImmunoOn
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
-Imports: fgsea, ggplot2, stringr, ggpubr, BiocParallel, pROC, stats, grDevices, graphics, depmap, readr, dplyr
+Imports: fgsea, ggplot2, stringr, ggpubr, BiocParallel, pROC, stats, grDevices, graphics, depmap, readr, dplyr,BiocGenerics, BiocParallel, Biobase
 Depends: R (>= 4.2.0)
