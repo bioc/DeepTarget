@@ -48,7 +48,12 @@ target is not expressed.
 Below is the step-by-step scripts for this Core analysis part:
 
 ## Data Loading and Preparation
-Users can use the Depmap2DeepTarget function and following examples Depmap2DeepTarget.Rmd to obtain the data needed. Please refer to OntargetM.Rd to obtain the same versions used in this example. Here, the script loads OntargetM object and prepare the matrices for the drug response scores (secondary_prism ) and CRISPR Gene Effect scores. We will use these two matrices to obtain the correlation information. Please note that OntargetM object only contains a small subset of data across common cell lines for demonstration purpose. 
+Users can use the Depmap2DeepTarget function to obtain the data needed. 
+Please note that you are required to agree to the terms and conditions of 
+DepMap portal (https://depmap.org/portal/). Some of these terms and conditions 
+are problematic for U.S. Federal Government employees, and they should consult their technology transfer office/legal office before agreeing to such terms and conditions. 
+Here, the script loads OntargetM object and prepare the matrices for the drug response scores (secondary_prism ) and CRISPR Gene Effect scores. We will use these two matrices to obtain the correlation information. This OntargetM object only contains a small subset of data across common cell lines for demonstration purpose.
+
 
 secondary_prism: row names is the drug ID and column names are cell
 lines. The values are the response scores. 
