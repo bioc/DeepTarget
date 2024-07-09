@@ -1,7 +1,9 @@
 
 # DeepTarget
 `DeepTarget` performs deep characterization of cancer drugs mechanism of action by integrating large-scale genetic and drug screens from the Cancer Dependency Map project run by the Broad Institute (depmap.org)  and aims to find drug's primary target(s), predict whether the drug specifically targets the wild-type or mutated target forms, and predict the secondary target(s) that mediate its response when the primary target is not expressed.
-
+# Depmap licence
+The user of this package is required to agree to the terms and conditions of DepMap portal (https://depmap.org/portal/). 
+Some of these terms and conditions are problematic for U.S. Federal Government employees, and they should consult their technology transfer office/legal office before agreeing to such terms and conditions.
 ## Installation
 ### GitHub installation
 You can install the development version of DeepTarget from [GitHub](https://github.com/) with:
