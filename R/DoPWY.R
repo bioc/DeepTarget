@@ -13,8 +13,10 @@ DoPWY <- function(Sim.GES.DRS,D.M){
         corrMat.ul <- unlist(corrMat[,x])
         names(corrMat.ul) <- row.names(corrMat)
         corrMat.ul.s <- sort(corrMat.ul, decreasing = TRUE)
-	corrMat.ul.s <- as.matrix(corrMat.ul.s)
-	corrMat.ul.s.u <- corrMat.ul.s[!duplicated(row.names(corrMat.ul.s)),]
+	    corrMat.ul.s <- as.matrix(corrMat.ul.s)
+	    corrMat.ul.s.u <- corrMat.ul.s[!duplicated(row.names(corrMat.ul.s)),]
+	    ## resolve build error of bioparallel on window server?
+	    BiocParallel::register(SerialParam())
         gseaEnr <- fgsea(
             pathways = PwyTargeted.c,stats = corrMat.ul.s.u,minSize=1,maxSize=100)
         gseaEnr})
