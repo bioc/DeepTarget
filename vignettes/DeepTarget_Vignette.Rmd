@@ -100,30 +100,6 @@ names(List.sim) <- row.names(sec.prism.f)
 
 ```
 
-## Performing Pathway Analysis Based on Drug Meta Data and the similarity output from above
-
-Input: Drug metadata and the similarity scores obtained above.
-
-The drug metadata provides the information for the drug including drug
-name, its targeted proteins (target column) and targeted pathways (moa
-column). For example, BMX and BTK are the targeted proteins for Bruton
-tyrosine kinase (BTK) inhibitor pathway.
-
-Here, DoPWY() performs the pre-ranked gene set enrichment analysis using
-fgsea, where the similarity scores from all genes were ranked and the
-tested pathways and their targeted proteins were obtained from drug metadata
-explained above.
-
-Output: The list of pathways enriched among the top-ranked genes to
-provide a pathway-level description of each drug's predicted primary and
-secondary MOA.
-
-```{r Performing Pathway Analysis Based on Drug Meta Data}
-metadata <- OntargetM$DrugMetadata
-Pwy.Enr <- DoPWY(List.sim,metadata)
-
-```
-
 ## Predicting Similarity Across Known Targeted Genes and All Genes
 
 The script predicts similarity Across Known Targeted Genes and All Genes
@@ -141,6 +117,7 @@ across all genes. For example, within a drug, the protein A with the
 highest similarity score will be assigned as best target for that drug.
 
 ```{r section.cap="Predicting Similarity Across Known Targeted Genes and All Genes"}
+metadata <- OntargetM$DrugMetadata
 DrugTarcomputeCor <- PredTarget(List.sim,metadata)
 DrugGeneMaxSim <- PredMaxSim(List.sim,metadata)
 
@@ -378,7 +355,7 @@ sim.LowExp.Pval=vapply(sim.LowExp, function(x) x[,1], FUN.VALUE = numeric(nrow(s
 head(sim.LowExp.Pval)
 ## Let's take a look at ibrutinib
 par(mar=c(4,4,5,2), xpd=TRUE, mfrow=c(1,2));
-plotSim(sim.LowExp.Pval[,8],sim.LowExp.Strength[,8],colorRampPalette(c("lightblue",'darkblue')), plot=TRUE)
+plotSim(sim.LowExp.Pval[,8],sim.LowExp.Strength[,8],colorRampPalette(c("lightblue",'darkblue')),plot=TRUE)
 
 ```
 
